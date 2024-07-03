@@ -1,3 +1,14 @@
-<h1 class="text-3xl font-bold underline">Basketball GM</h1>
+<div class="h-screen bg-slate-800 text-white">
+  <h1 class="text-3xl font-bold underline">Basketball GM</h1>
+
+  <div>
+    <p>Click the button below to simulate a game</p>
+    <button
+      (click)="simulateGame()"
+      class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+      Simulate Game
+    </button>
+  </div>
+</div>
 
 <router-outlet />
