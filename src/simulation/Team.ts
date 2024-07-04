@@ -29,6 +29,14 @@ export class Team {
     return `${this.city} ${this.name}`;
   }
 
+  getPlayers(): Player[] {
+    return this.players;
+  }
+
+  getPoints(): number {
+    return this.stats.getPoints();
+  }
+
   getRandomPlayer(): Player {
     const randomIndex = getRandomNumber(this.players.length - 1);
     return this.players[randomIndex];

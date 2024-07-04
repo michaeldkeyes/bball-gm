@@ -9,6 +9,21 @@
       Simulate Game
     </button>
   </div>
+
+  @if (gameResult().getWinner().name !== "") {
+    <div class="flex justify-center">
+      <h2>{{ homeTeam().getFullName() }} &nbsp;</h2>
+      <h2>{{ homeTeam().getPoints() }} &nbsp;</h2>
+      <span> - &nbsp; </span>
+      <h2>{{ awayTeam().getFullName() }} &nbsp;</h2>
+      <h2>{{ awayTeam().getPoints() }} &nbsp;</h2>
+    </div>
+
+    <app-stats-table [team]="homeTeam()" />
+    <app-stats-table [team]="awayTeam()" />
+  } @else {
+    <p class="mt-4">No game has been simulated yet</p>
+  }
 </div>
 
 <router-outlet />

@@ -1,3 +1,4 @@
+import { GameResult } from "./GameResult";
 import { Team } from "./Team";
 import { getRandomNumber } from "./utils/random";
 
@@ -14,7 +15,7 @@ export class Game {
     this.offense = getRandomNumber(2) === 0 ? homeTeam : awayTeam;
   }
 
-  simulateGame(): void {
+  simulateGame(): GameResult {
     console.log(
       `Simulating game between ${this.homeTeam.getFullName()} and ${this.awayTeam.getFullName()}`
     );
@@ -37,6 +38,30 @@ export class Game {
 
       quarter++;
     }
+
+    const homePoints = this.homeTeam.getPoints();
+    const awayPoints = this.awayTeam.getPoints();
+
+    const gameResult: GameResult = new GameResult(
+      {
+        name:
+          homePoints > awayPoints
+            ? this.homeTeam.getFullName()
+            : this.awayTeam.getFullName(),
+        points: Math.max(homePoints, awayPoints),
+      },
+      {
+        name:
+          homePoints < awayPoints
+            ? this.homeTeam.getFullName()
+            : this.awayTeam.getFullName(),
+        points: Math.min(homePoints, awayPoints),
+      },
+      0,
+      [this.homeTeam, this.awayTeam]
+    );
+
+    return gameResult;
   }
 
   private simPossession(): void {
@@ -51,7 +76,6 @@ export class Game {
     this.offense.incrementFieldGoalAttempts();
     // If the shot is less than the player's shooting percentage, it's good
     if (shot < player.getShooting()) {
-      console.log(`${player.getFullName()} makes the shot!`);
       player.incrementPoints(2);
       this.offense.incrementPoints(2);
       player.incrementFieldGoalMakes();

@@ -1,17 +1,25 @@
-import { Component, signal } from "@angular/core";
+import { Component, computed, signal } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { Game } from "../simulation/Game";
 import { Team } from "../simulation/Team";
 import { Player } from "../simulation/Player";
+import { GameResult } from "../simulation/GameResult";
+import { StatsTableComponent } from "./stats-table/stats-table.component";
 
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, StatsTableComponent],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",
 })
 export class AppComponent {
+  gameResult = signal<GameResult>(new GameResult());
+  homeTeam = computed(() => this.gameResult().getTeams()[0]);
+  awayTeam = computed(() => this.gameResult().getTeams()[1]);
+
+  headers = ["Player", "Position", "FG", "Points"];
+
   simulateGame(): void {
     const homePlayers = [
       new Player("LeBron", "James", "SF"),
@@ -33,6 +41,6 @@ export class AppComponent {
 
     const game = new Game(homeTeam, awayTeam);
 
-    game.simulateGame();
+    this.gameResult.set(game.simulateGame());
   }
 }

@@ -9,6 +9,18 @@ export class Stats {
     this.points = 0;
   }
 
+  getFieldGoalAttempts(): number {
+    return this.fieldGoalAttempts;
+  }
+
+  getFieldGoalMakes(): number {
+    return this.fieldGoalMakes;
+  }
+
+  getPoints(): number {
+    return this.points;
+  }
+
   incrementPoints(points: number): void {
     this.points += points;
   }

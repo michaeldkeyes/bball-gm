@@ -1,10 +1,12 @@
 import { Stats } from "./Stats";
 import { getRandomNumber } from "./utils/random";
 
+type Position = "PG" | "SG" | "SF" | "PF" | "C";
+
 export class Player {
   private firstName: string;
   private lastName: string;
-  private position: string;
+  private position: Position;
 
   // attributes
   private shooting: number;
@@ -12,7 +14,7 @@ export class Player {
   // stats
   private stats: Stats;
 
-  constructor(firstName: string, lastName: string, position: string) {
+  constructor(firstName: string, lastName: string, position: Position) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.position = position;
@@ -24,8 +26,24 @@ export class Player {
     return this.shooting;
   }
 
+  getFieldGoalAttempts(): number {
+    return this.stats.getFieldGoalAttempts();
+  }
+
+  getFieldGoalMakes(): number {
+    return this.stats.getFieldGoalMakes();
+  }
+
   getFullName(): string {
     return `${this.firstName} ${this.lastName}`;
+  }
+
+  getPoints(): number {
+    return this.stats.getPoints();
+  }
+
+  getPosition(): Position {
+    return this.position;
   }
 
   incrementPoints(points: number): void {
