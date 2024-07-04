@@ -42,12 +42,16 @@ export class Player {
     return this.stats.getPoints();
   }
 
+  getPointsPerQuarter(): number[] {
+    return this.stats.getPointsPerQuarter();
+  }
+
   getPosition(): Position {
     return this.position;
   }
 
-  incrementPoints(points: number): void {
-    this.stats.incrementPoints(points);
+  incrementPoints(points: number, quarter: number): void {
+    this.stats.incrementPoints(points, quarter);
   }
 
   incrementFieldGoalAttempts(): void {

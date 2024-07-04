@@ -15,10 +15,8 @@ import { StatsTableComponent } from "./stats-table/stats-table.component";
 })
 export class AppComponent {
   gameResult = signal<GameResult>(new GameResult());
-  homeTeam = computed(() => this.gameResult().getTeams()[0]);
-  awayTeam = computed(() => this.gameResult().getTeams()[1]);
-
-  headers = ["Player", "Position", "FG", "Points"];
+  homeTeam = computed(() => this.gameResult()?.getTeams()[0].team);
+  awayTeam = computed(() => this.gameResult()?.getTeams()[1].team);
 
   simulateGame(): void {
     const homePlayers = [

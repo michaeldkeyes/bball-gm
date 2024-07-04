@@ -8,6 +8,8 @@ export class Game {
 
   private offense: Team;
 
+  private quarter = 1;
+
   constructor(homeTeam: Team, awayTeam: Team) {
     this.homeTeam = homeTeam;
     this.awayTeam = awayTeam;
@@ -19,12 +21,10 @@ export class Game {
     console.log(
       `Simulating game between ${this.homeTeam.getFullName()} and ${this.awayTeam.getFullName()}`
     );
-    console.log(`Tip-off! ${this.offense.getFullName()} has the ball!`);
 
-    let quarter = 1;
     let gameClock = 720;
 
-    while (quarter <= 4) {
+    while (this.quarter <= 4) {
       while (gameClock > 0) {
         const timeOfPossession = getRandomNumber(24);
 
@@ -36,30 +36,46 @@ export class Game {
           this.offense === this.homeTeam ? this.awayTeam : this.homeTeam;
       }
 
-      quarter++;
+      this.quarter++;
     }
 
     const homePoints = this.homeTeam.getPoints();
     const awayPoints = this.awayTeam.getPoints();
 
     const gameResult: GameResult = new GameResult(
-      {
-        name:
-          homePoints > awayPoints
-            ? this.homeTeam.getFullName()
-            : this.awayTeam.getFullName(),
-        points: Math.max(homePoints, awayPoints),
-      },
-      {
-        name:
-          homePoints < awayPoints
-            ? this.homeTeam.getFullName()
-            : this.awayTeam.getFullName(),
-        points: Math.min(homePoints, awayPoints),
-      },
-      0,
-      [this.homeTeam, this.awayTeam]
+      [
+        {
+          team: this.homeTeam,
+          isWinner: homePoints > awayPoints,
+          pointsPerQuarter: this.homeTeam.getPointsPerQuarter(),
+        },
+        {
+          team: this.awayTeam,
+          isWinner: awayPoints > homePoints,
+          pointsPerQuarter: this.awayTeam.getPointsPerQuarter(),
+        },
+      ],
+      0
     );
+
+    // const gameResult: GameResult = new GameResult(
+    //   {
+    //     name:
+    //       homePoints > awayPoints
+    //         ? this.homeTeam.getFullName()
+    //         : this.awayTeam.getFullName(),
+    //     points: Math.max(homePoints, awayPoints),
+    //   },
+    //   {
+    //     name:
+    //       homePoints < awayPoints
+    //         ? this.homeTeam.getFullName()
+    //         : this.awayTeam.getFullName(),
+    //     points: Math.min(homePoints, awayPoints),
+    //   },
+    //   0,
+    //   [this.homeTeam, this.awayTeam]
+    // );
 
     return gameResult;
   }
@@ -76,8 +92,8 @@ export class Game {
     this.offense.incrementFieldGoalAttempts();
     // If the shot is less than the player's shooting percentage, it's good
     if (shot < player.getShooting()) {
-      player.incrementPoints(2);
-      this.offense.incrementPoints(2);
+      player.incrementPoints(2, this.quarter);
+      this.offense.incrementPoints(2, this.quarter);
       player.incrementFieldGoalMakes();
       this.offense.incrementFieldGoalMakes();
     }

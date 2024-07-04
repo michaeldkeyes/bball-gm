@@ -37,13 +37,17 @@ export class Team {
     return this.stats.getPoints();
   }
 
+  getPointsPerQuarter(): number[] {
+    return this.stats.getPointsPerQuarter();
+  }
+
   getRandomPlayer(): Player {
     const randomIndex = getRandomNumber(this.players.length - 1);
     return this.players[randomIndex];
   }
 
-  incrementPoints(points: number): void {
-    this.stats.incrementPoints(points);
+  incrementPoints(points: number, quarter: number): void {
+    this.stats.incrementPoints(points, quarter);
   }
 
   incrementFieldGoalAttempts(): void {
