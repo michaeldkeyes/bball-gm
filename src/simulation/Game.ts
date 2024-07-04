@@ -47,11 +47,15 @@ export class Game {
     // Get a random number between 0 and 100
     const shot = getRandomNumber(100);
 
+    player.incrementFieldGoalAttempts();
+    this.offense.incrementFieldGoalAttempts();
     // If the shot is less than the player's shooting percentage, it's good
     if (shot < player.getShooting()) {
-      //console.log(`${player.getFullName()} makes the shot!`);
-    } else {
-      //console.log(`${player.getFullName()} misses the shot!`);
+      console.log(`${player.getFullName()} makes the shot!`);
+      player.incrementPoints(2);
+      this.offense.incrementPoints(2);
+      player.incrementFieldGoalMakes();
+      this.offense.incrementFieldGoalMakes();
     }
   }
 }
