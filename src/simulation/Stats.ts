@@ -8,7 +8,7 @@ export class Stats {
     this.fieldGoalAttempts = 0;
     this.fieldGoalMakes = 0;
     this.points = 0;
-    this.pointsPerQuarter = [0, 0, 0, 0];
+    this.pointsPerQuarter = [];
   }
 
   getFieldGoalAttempts(): number {

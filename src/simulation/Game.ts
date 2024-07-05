@@ -20,8 +20,14 @@ export class Game {
   }
 
   simulateGame(): GameResult {
-    while (this.quarter <= 4) {
-      let gameClock = 720;
+    let gameClock = 720;
+
+    while (
+      this.quarter <= 4 ||
+      this.homeTeam.getPoints() === this.awayTeam.getPoints()
+    ) {
+      this.homeTeam.getPointsPerQuarter().push(0);
+      this.awayTeam.getPointsPerQuarter().push(0);
 
       while (gameClock > 0) {
         const timeOfPossession = getRandomNumber(24);
@@ -35,6 +41,7 @@ export class Game {
       }
 
       this.quarter++;
+      gameClock = this.quarter <= 4 ? 720 : 300;
     }
 
     const homePoints = this.homeTeam.getPoints();

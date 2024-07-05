@@ -7,21 +7,21 @@
         track $index;
         let index = $index
       ) {
-        <th>Q{{ index + 1 }}</th>
+        <th class="px-1">Q{{ index + 1 }}</th>
       }
-      <th>F</th>
+      <th class="px-1">F</th>
     </tr>
   </thead>
   <tbody>
     @for (teamResult of gameResult().getTeams(); track $index) {
       <tr class="border-y border-solid border-black">
-        <td class="pr-3">
+        <td class="pr-2">
           {{ teamResult.team.getAbbreviation() }}
         </td>
         @for (points of teamResult.team.getPointsPerQuarter(); track $index) {
-          <td>{{ points }}</td>
+          <td class="px-1">{{ points }}</td>
         }
-        <td>{{ teamResult.team.getPoints() }}</td>
+        <td class="px-1">{{ teamResult.team.getPoints() }}</td>
       </tr>
     }
   </tbody>
