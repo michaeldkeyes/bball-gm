@@ -12,5 +12,5 @@ import { CommonModule } from "@angular/common";
 export class StatsTableComponent {
   team = input.required<Team>();
 
-  headers = ["Player", "Position", "FG", "Points"];
+  headers = ["Player", "Position", "FG", "FG%", "3P", "Points"];
 }

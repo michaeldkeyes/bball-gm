@@ -74,15 +74,35 @@ export class Game {
 
     // Get a random number between 0 and 100
     const shot = getRandomNumber(100);
+    // Determine if the player will shoot a 2 or 3
+    const shotType = getRandomNumber(100);
 
-    player.incrementFieldGoalAttempts();
-    this.offense.incrementFieldGoalAttempts();
-    // If the shot is less than the player's shooting percentage, it's good
-    if (shot < player.getShooting()) {
-      player.incrementPoints(2, this.quarter);
-      this.offense.incrementPoints(2, this.quarter);
-      player.incrementFieldGoalMakes();
-      this.offense.incrementFieldGoalMakes();
+    const playerStats = player.getStats();
+    const offenseStats = this.offense.getStats();
+
+    playerStats.incrementFieldGoalAttempts();
+    offenseStats.incrementFieldGoalAttempts();
+
+    if (shotType <= player.getThreePointTendency()) {
+      player.getStats().incrementThreePointAttempts();
+      this.offense.getStats().incrementThreePointAttempts();
+      // If the shot is less than the player's three point percentage, it's good
+      if (shot <= player.getThreePointShooting()) {
+        player.getStats().incrementThreePointMakes();
+        this.offense.getStats().incrementThreePointMakes();
+        playerStats.incrementPoints(3, this.quarter);
+        offenseStats.incrementPoints(3, this.quarter);
+        playerStats.incrementFieldGoalMakes();
+        offenseStats.incrementFieldGoalMakes();
+      }
+    } else {
+      // If the shot is less than the player's two point percentage, it's good
+      if (shot <= player.getTwoPointShooting()) {
+        playerStats.incrementPoints(2, this.quarter);
+        offenseStats.incrementPoints(2, this.quarter);
+        playerStats.incrementFieldGoalMakes();
+        offenseStats.incrementFieldGoalMakes();
+      }
     }
   }
 }

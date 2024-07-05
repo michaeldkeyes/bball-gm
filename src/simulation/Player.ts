@@ -1,5 +1,5 @@
 import { Stats } from "./Stats";
-import { getRandomNumber } from "./utils/random";
+import { getRandomNumberBetween } from "./utils/random";
 
 type Position = "PG" | "SG" | "SF" | "PF" | "C";
 
@@ -9,7 +9,9 @@ export class Player {
   private position: Position;
 
   // attributes
-  private shooting: number;
+  private twoPointShooting: number;
+  private threePointShooting: number;
+  private threePointTendency: number;
 
   // stats
   private stats: Stats;
@@ -18,12 +20,10 @@ export class Player {
     this.firstName = firstName;
     this.lastName = lastName;
     this.position = position;
-    this.shooting = getRandomNumber(100);
+    this.twoPointShooting = getRandomNumberBetween(30, 70);
+    this.threePointShooting = getRandomNumberBetween(20, 50);
+    this.threePointTendency = getRandomNumberBetween(0, 60);
     this.stats = new Stats();
-  }
-
-  getShooting(): number {
-    return this.shooting;
   }
 
   getFieldGoalAttempts(): number {
@@ -50,15 +50,27 @@ export class Player {
     return this.position;
   }
 
-  incrementPoints(points: number, quarter: number): void {
-    this.stats.incrementPoints(points, quarter);
+  getStats(): Stats {
+    return this.stats;
   }
 
-  incrementFieldGoalAttempts(): void {
-    this.stats.incrementFieldGoalAttempts();
+  getThreePointAttempts(): number {
+    return this.stats.getThreePointAttempts();
   }
 
-  incrementFieldGoalMakes(): void {
-    this.stats.incrementFieldGoalMakes();
+  getThreePointMakes(): number {
+    return this.stats.getThreePointMakes();
+  }
+
+  getThreePointShooting(): number {
+    return this.threePointShooting;
+  }
+
+  getThreePointTendency(): number {
+    return this.threePointTendency;
+  }
+
+  getTwoPointShooting(): number {
+    return this.twoPointShooting;
   }
 }

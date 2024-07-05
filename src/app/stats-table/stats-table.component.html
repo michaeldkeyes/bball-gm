@@ -18,6 +18,17 @@
           <td class="px-2 py-1">
             {{ player.getFieldGoalMakes() }}/{{ player.getFieldGoalAttempts() }}
           </td>
+          <td class="px-2 py-1">
+            {{
+              player.getFieldGoalMakes() / player.getFieldGoalAttempts()
+                | percent: "1.1-1"
+            }}
+          </td>
+          <td class="px-2 py-1">
+            {{ player.getThreePointMakes() }}/{{
+              player.getThreePointAttempts()
+            }}
+          </td>
           <td class="px-2 py-1">{{ player.getPoints() }}</td>
         </tr>
       }

@@ -50,15 +50,7 @@ export class Team {
     return this.players[randomIndex];
   }
 
-  incrementPoints(points: number, quarter: number): void {
-    this.stats.incrementPoints(points, quarter);
-  }
-
-  incrementFieldGoalAttempts(): void {
-    this.stats.incrementFieldGoalAttempts();
-  }
-
-  incrementFieldGoalMakes(): void {
-    this.stats.incrementFieldGoalMakes();
+  getStats(): Stats {
+    return this.stats;
   }
 }
