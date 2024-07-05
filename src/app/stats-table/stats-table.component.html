@@ -33,5 +33,28 @@
         </tr>
       }
     </tbody>
+    <tfoot class="bg-slate-800">
+      <tr>
+        <td class="px-2 py-1">Totals</td>
+        <td class="px-2 py-1"></td>
+        <td class="px-2 py-1">
+          {{ team().getStats().getFieldGoalMakes() }}/{{
+            team().getStats().getFieldGoalAttempts()
+          }}
+        </td>
+        <td class="px-2 py-1">
+          {{
+            team().getStats().getFieldGoalMakes() /
+              team().getStats().getFieldGoalAttempts() | percent: "1.1-1"
+          }}
+        </td>
+        <td class="px-2 py-1">
+          {{ team().getStats().getThreePointMakes() }}/{{
+            team().getStats().getThreePointAttempts()
+          }}
+        </td>
+        <td class="px-2 py-1">{{ team().getStats().getPoints() }}</td>
+      </tr>
+    </tfoot>
   </table>
 </div>
