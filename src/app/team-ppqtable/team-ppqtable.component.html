@@ -1,0 +1,28 @@
+<table class="m-auto mb-5 border-y border-solid border-black text-center">
+  <thead>
+    <tr class="border-y border-solid border-black">
+      <th></th>
+      @for (
+        quarter of [].constructor(gameResult().getQuarters() - 1);
+        track $index;
+        let index = $index
+      ) {
+        <th>Q{{ index + 1 }}</th>
+      }
+      <th>F</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (teamResult of gameResult().getTeams(); track $index) {
+      <tr class="border-y border-solid border-black">
+        <td class="pr-3">
+          {{ teamResult.team.getAbbreviation() }}
+        </td>
+        @for (points of teamResult.team.getPointsPerQuarter(); track $index) {
+          <td>{{ points }}</td>
+        }
+        <td>{{ teamResult.team.getPoints() }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

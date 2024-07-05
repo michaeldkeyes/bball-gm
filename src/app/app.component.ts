@@ -5,18 +5,19 @@ import { Team } from "../simulation/Team";
 import { Player } from "../simulation/Player";
 import { GameResult } from "../simulation/GameResult";
 import { StatsTableComponent } from "./stats-table/stats-table.component";
+import { TeamPPQTableComponent } from "./team-ppqtable/team-ppqtable.component";
 
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [RouterOutlet, StatsTableComponent],
+  imports: [RouterOutlet, StatsTableComponent, TeamPPQTableComponent],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",
 })
 export class AppComponent {
   gameResult = signal<GameResult>(new GameResult());
-  homeTeam = computed(() => this.gameResult()?.getTeams()[0].team);
-  awayTeam = computed(() => this.gameResult()?.getTeams()[1].team);
+  homeTeam = computed(() => this.gameResult().getTeams()[0].team);
+  awayTeam = computed(() => this.gameResult().getTeams()[1].team);
 
   simulateGame(): void {
     const homePlayers = [

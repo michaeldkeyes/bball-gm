@@ -25,6 +25,10 @@ export class Team {
     this.stats = new Stats();
   }
 
+  getAbbreviation(): string {
+    return this.abbreviation;
+  }
+
   getFullName(): string {
     return `${this.city} ${this.name}`;
   }
@@ -42,7 +46,7 @@ export class Team {
   }
 
   getRandomPlayer(): Player {
-    const randomIndex = getRandomNumber(this.players.length - 1);
+    const randomIndex = getRandomNumber(this.players.length);
     return this.players[randomIndex];
   }
 

@@ -8,23 +8,21 @@ export class Game {
 
   private offense: Team;
 
-  private quarter = 1;
+  private quarter;
 
   constructor(homeTeam: Team, awayTeam: Team) {
     this.homeTeam = homeTeam;
     this.awayTeam = awayTeam;
 
     this.offense = getRandomNumber(2) === 0 ? homeTeam : awayTeam;
+
+    this.quarter = 1;
   }
 
   simulateGame(): GameResult {
-    console.log(
-      `Simulating game between ${this.homeTeam.getFullName()} and ${this.awayTeam.getFullName()}`
-    );
-
-    let gameClock = 720;
-
     while (this.quarter <= 4) {
+      let gameClock = 720;
+
       while (gameClock > 0) {
         const timeOfPossession = getRandomNumber(24);
 
@@ -55,27 +53,9 @@ export class Game {
           pointsPerQuarter: this.awayTeam.getPointsPerQuarter(),
         },
       ],
-      0
+      this.quarter,
+      true
     );
-
-    // const gameResult: GameResult = new GameResult(
-    //   {
-    //     name:
-    //       homePoints > awayPoints
-    //         ? this.homeTeam.getFullName()
-    //         : this.awayTeam.getFullName(),
-    //     points: Math.max(homePoints, awayPoints),
-    //   },
-    //   {
-    //     name:
-    //       homePoints < awayPoints
-    //         ? this.homeTeam.getFullName()
-    //         : this.awayTeam.getFullName(),
-    //     points: Math.min(homePoints, awayPoints),
-    //   },
-    //   0,
-    //   [this.homeTeam, this.awayTeam]
-    // );
 
     return gameResult;
   }

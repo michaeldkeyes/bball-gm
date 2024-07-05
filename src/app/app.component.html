@@ -10,20 +10,51 @@
     </button>
   </div>
 
-  @if (gameResult()!.getTeams() !== null) {
-    <div class="flex justify-center">
-      <h2>{{ homeTeam()!.getFullName() }} &nbsp;</h2>
-      <h2>{{ homeTeam()!.getPoints() }} &nbsp;</h2>
-      <span> - &nbsp; </span>
-      <h2>{{ awayTeam()!.getFullName() }} &nbsp;</h2>
-      <h2>{{ awayTeam()!.getPoints() }} &nbsp;</h2>
-    </div>
+  <div class="mb-3">
+    @if (gameResult().getIsFinal() === true) {
+      <div class="flex justify-center">
+        <h2>{{ homeTeam().getFullName() }} &nbsp;</h2>
+        <h2>{{ homeTeam().getPoints() }} &nbsp;</h2>
+        <span> - &nbsp; </span>
+        <h2>{{ awayTeam().getFullName() }} &nbsp;</h2>
+        <h2>{{ awayTeam().getPoints() }} &nbsp;</h2>
+      </div>
 
-    <app-stats-table [team]="homeTeam()" />
-    <app-stats-table [team]="awayTeam()" />
-  } @else {
-    <p class="mt-4">No game has been simulated yet</p>
-  }
+      <app-team-ppqtable [gameResult]="gameResult()" />
+
+      <!-- <table class="m-auto mb-5 border-y border-solid border-black text-center">
+        <thead>
+          <tr class="border-y border-solid border-black">
+            <th></th>
+            @for (
+              points of homeTeam().getPointsPerQuarter();
+              track $index;
+              let index = $index
+            ) {
+              <th>Q{{ index + 1 }}</th>
+            }
+            <th>F</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-y border-solid border-black">
+            <td class="pr-3">
+              {{ homeTeam().getAbbreviation() }}
+            </td>
+            @for (points of homeTeam().getPointsPerQuarter(); track $index) {
+              <td>{{ points }}</td>
+            }
+            <td>{{ homeTeam().getPoints() }}</td>
+          </tr>
+        </tbody>
+      </table> -->
+
+      <app-stats-table [team]="homeTeam()" />
+      <app-stats-table [team]="awayTeam()" />
+    } @else {
+      <p class="mt-4">No game has been simulated yet</p>
+    }
+  </div>
 </div>
 
 <router-outlet />

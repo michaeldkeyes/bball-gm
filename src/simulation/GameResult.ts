@@ -18,16 +18,27 @@ interface TeamResult {
 }
 
 export class GameResult {
+  isFinal: boolean;
   teams: [TeamResult, TeamResult];
-  overtimes: number;
+  quarters: number;
 
   // providing these default values is necessary for typescript to have a no-arg constructor
   constructor(
     teams: [TeamResult, TeamResult] = [blankTeamResult, blankTeamResult],
-    overtimes: number = 0
+    quarters: number = 0,
+    isFinal: boolean = false
   ) {
     this.teams = teams;
-    this.overtimes = overtimes;
+    this.quarters = quarters;
+    this.isFinal = isFinal;
+  }
+
+  getIsFinal(): boolean {
+    return this.isFinal;
+  }
+
+  getQuarters(): number {
+    return this.quarters;
   }
 
   getTeams(): [TeamResult, TeamResult] {

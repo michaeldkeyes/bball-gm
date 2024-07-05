@@ -29,7 +29,7 @@ export class Stats {
 
   incrementPoints(points: number, quarter: number): void {
     this.points += points;
-    this.pointsPerQuarter[quarter - 1]++;
+    this.pointsPerQuarter[quarter - 1] += points;
   }
 
   incrementFieldGoalAttempts(): void {
