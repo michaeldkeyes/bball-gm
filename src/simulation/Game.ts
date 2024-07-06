@@ -1,6 +1,7 @@
 import { GameResult } from "./GameResult";
+import { Player } from "./Player";
 import { Team } from "./Team";
-import { getRandomNumber } from "./utils/random";
+import { getRandomNumber, getRandomNumberBetween } from "./utils/random";
 
 export class Game {
   private homeTeam: Team;
@@ -30,7 +31,7 @@ export class Game {
       this.awayTeam.getPointsPerQuarter().push(0);
 
       while (gameClock > 0) {
-        const timeOfPossession = getRandomNumber(24);
+        const timeOfPossession = getRandomNumberBetween(10, 24);
 
         gameClock -= timeOfPossession;
 
@@ -83,17 +84,29 @@ export class Game {
     playerStats.incrementFieldGoalAttempts();
     offenseStats.incrementFieldGoalAttempts();
 
+    const isFouled = getRandomNumber(100) <= player.getFreeThrowRate();
+
     if (shotType <= player.getThreePointTendency()) {
-      player.getStats().incrementThreePointAttempts();
-      this.offense.getStats().incrementThreePointAttempts();
+      playerStats.incrementThreePointAttempts();
+      offenseStats.incrementThreePointAttempts();
       // If the shot is less than the player's three point percentage, it's good
       if (shot <= player.getThreePointShooting()) {
-        player.getStats().incrementThreePointMakes();
-        this.offense.getStats().incrementThreePointMakes();
+        playerStats.incrementThreePointMakes();
+        offenseStats.incrementThreePointMakes();
         playerStats.incrementPoints(3, this.quarter);
         offenseStats.incrementPoints(3, this.quarter);
         playerStats.incrementFieldGoalMakes();
         offenseStats.incrementFieldGoalMakes();
+
+        if (isFouled) {
+          this.shootFreeThrow(player, 1);
+        }
+      } else if (isFouled) {
+        playerStats.decrementFieldGoalAttempts();
+        playerStats.decrementThreePointAttempts();
+        offenseStats.decrementFieldGoalAttempts();
+        offenseStats.decrementThreePointAttempts();
+        this.shootFreeThrow(player, 3);
       }
     } else {
       // If the shot is less than the player's two point percentage, it's good
@@ -102,6 +115,33 @@ export class Game {
         offenseStats.incrementPoints(2, this.quarter);
         playerStats.incrementFieldGoalMakes();
         offenseStats.incrementFieldGoalMakes();
+
+        if (isFouled) {
+          this.shootFreeThrow(player, 1);
+        }
+      } else if (isFouled) {
+        playerStats.decrementFieldGoalAttempts();
+        offenseStats.decrementFieldGoalAttempts();
+        this.shootFreeThrow(player, 2);
+      }
+    }
+  }
+
+  private shootFreeThrow(player: Player, attempts: number): void {
+    const playerStats = player.getStats();
+    const offenseStats = this.offense.getStats();
+
+    for (let i = 0; i < attempts; i++) {
+      playerStats.incrementFreeThrowAttempts();
+      offenseStats.incrementFreeThrowAttempts();
+
+      const shot = getRandomNumber(100);
+
+      if (shot <= player.getFreeThrowShooting()) {
+        playerStats.incrementFreeThrowMakes();
+        offenseStats.incrementFreeThrowMakes();
+        playerStats.incrementPoints(1, this.quarter);
+        offenseStats.incrementPoints(1, this.quarter);
       }
     }
   }

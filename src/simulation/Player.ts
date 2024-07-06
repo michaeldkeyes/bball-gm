@@ -9,6 +9,8 @@ export class Player {
   private position: Position;
 
   // attributes
+  private freeThrowRate: number;
+  private freeThrowShooting: number;
   private twoPointShooting: number;
   private threePointShooting: number;
   private threePointTendency: number;
@@ -20,6 +22,8 @@ export class Player {
     this.firstName = firstName;
     this.lastName = lastName;
     this.position = position;
+    this.freeThrowRate = getRandomNumberBetween(10, 40);
+    this.freeThrowShooting = getRandomNumberBetween(60, 90);
     this.twoPointShooting = getRandomNumberBetween(30, 70);
     this.threePointShooting = getRandomNumberBetween(20, 50);
     this.threePointTendency = getRandomNumberBetween(0, 60);
@@ -32,6 +36,14 @@ export class Player {
 
   getFieldGoalMakes(): number {
     return this.stats.getFieldGoalMakes();
+  }
+
+  getFreeThrowRate(): number {
+    return this.freeThrowRate;
+  }
+
+  getFreeThrowShooting(): number {
+    return this.freeThrowShooting;
   }
 
   getFullName(): string {
