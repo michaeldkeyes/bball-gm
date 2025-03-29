@@ -1,17 +1,21 @@
 <div class="h-screen bg-slate-800 text-white">
   <h1 class="text-3xl font-bold underline">Basketball GM</h1>
 
-  <div>
+  <!-- <div>
     <p>Click the button below to simulate a game</p>
     <button
       (click)="simulateGame()"
       class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
       Simulate Game
     </button>
-  </div>
+  </div> -->
 
   <div class="mb-3">
-    @if (gameResult().getIsFinal() === true) {
+    <div class="flex justify-center">
+      <h2 class="mr-5">{{ homeTeam().city }} {{ homeTeam().name }}</h2>
+      <h2>{{ awayTeam().city }} {{ awayTeam().name }}</h2>
+    </div>
+    <!-- @if (gameResult().getIsFinal() === true) {
       <div class="flex justify-center">
         <h2>{{ homeTeam().getFullName() }} &nbsp;</h2>
         <h2>{{ homeTeam().getPoints() }} &nbsp;</h2>
@@ -26,7 +30,7 @@
       <app-stats-table [team]="awayTeam()" />
     } @else {
       <p class="mt-4">No game has been simulated yet</p>
-    }
+    } -->
   </div>
 </div>
 
