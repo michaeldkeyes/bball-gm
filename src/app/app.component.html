@@ -1,37 +1,17 @@
 <div class="h-screen bg-slate-800 text-white">
   <h1 class="text-3xl font-bold underline">Basketball GM</h1>
 
-  <!-- <div>
-    <p>Click the button below to simulate a game</p>
-    <button
-      (click)="simulateGame()"
-      class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-      Simulate Game
-    </button>
-  </div> -->
-
   <div class="mb-3">
     <div class="flex justify-center">
-      <h2 class="mr-5">{{ homeTeam().city }} {{ homeTeam().name }}</h2>
-      <h2>{{ awayTeam().city }} {{ awayTeam().name }}</h2>
+      <!-- <h2 class="mr-5">{{ homeTeam()!.city }} {{ homeTeam()!.name }}</h2>
+      <h2>{{ awayTeam()!.city }} {{ awayTeam()!.name }}</h2> -->
     </div>
-    <!-- @if (gameResult().getIsFinal() === true) {
-      <div class="flex justify-center">
-        <h2>{{ homeTeam().getFullName() }} &nbsp;</h2>
-        <h2>{{ homeTeam().getPoints() }} &nbsp;</h2>
-        <span> - &nbsp; </span>
-        <h2>{{ awayTeam().getFullName() }} &nbsp;</h2>
-        <h2>{{ awayTeam().getPoints() }} &nbsp;</h2>
-      </div>
-
-      <app-team-ppqtable [gameResult]="gameResult()" />
-
-      <app-stats-table [team]="homeTeam()" />
-      <app-stats-table [team]="awayTeam()" />
-    } @else {
-      <p class="mt-4">No game has been simulated yet</p>
-    } -->
   </div>
+
+  @if (homeTeam() && awayTeam()) {
+    <app-stats-table [team]="homeTeam()" />
+    <app-stats-table [team]="awayTeam()" />
+  }
 </div>
 
 <router-outlet />
