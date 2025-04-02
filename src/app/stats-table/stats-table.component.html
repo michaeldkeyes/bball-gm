@@ -17,8 +17,18 @@
             {{ player.firstName }} {{ player.lastName }}
           </td>
           <td class="px-2 py-1">{{ player.position }}</td>
+          <td class="px-2 py-1">{{ player.stats?.points }}</td>
         </tr>
       }
     </tbody>
+    <tfoot class="bg-slate-800">
+      <tr>
+        <td class="px-2 py-1">Totals</td>
+        <td class="px-2 py-1"></td>
+        <td class="px-2 py-1">
+          {{ team().stats?.points }}
+        </td>
+      </tr>
+    </tfoot>
   </table>
 </div>

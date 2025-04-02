@@ -1,11 +1,13 @@
 <div class="h-screen bg-slate-800 text-white">
   <h1 class="text-3xl font-bold underline">Basketball GM</h1>
 
-  <div class="mb-3">
-    <div class="flex justify-center">
-      <!-- <h2 class="mr-5">{{ homeTeam()!.city }} {{ homeTeam()!.name }}</h2>
-      <h2>{{ awayTeam()!.city }} {{ awayTeam()!.name }}</h2> -->
-    </div>
+  <div>
+    <p>Click the button below to simulate a game</p>
+    <button
+      class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
+      (click)="simulateGame()">
+      Simulate Game
+    </button>
   </div>
 
   @if (homeTeam() && awayTeam()) {
