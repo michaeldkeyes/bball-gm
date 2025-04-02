@@ -13,5 +13,5 @@ export class StatsTableComponent {
 
   fullTeamName = computed(() => `${this.team().city} ${this.team().name}`);
 
-  headers = ["Player", "Position", "Points", "Rebounds", "Assists"];
+  headers = ["Player", "Position", "FG", "Points", "Rebounds", "Assists"];
 }

@@ -17,6 +17,13 @@
             {{ player.firstName }} {{ player.lastName }}
           </td>
           <td class="px-2 py-1">{{ player.position }}</td>
+          <!-- <td class="px-2 py-1">{{ player.stats?.minutes }}</td> -->
+          <td class="px-2 py-1">
+            {{ player.stats?.fieldGoalsMade }}/{{
+              player.stats?.fieldGoalAttempts
+            }}
+          </td>
+
           <td class="px-2 py-1">{{ player.stats?.points }}</td>
         </tr>
       }
