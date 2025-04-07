@@ -10,9 +10,9 @@
     </button>
   </div>
 
-  @if (homeTeam() && awayTeam()) {
-    <app-stats-table [team]="homeTeam()" />
-    <app-stats-table [team]="awayTeam()" />
+  @if (gameResult()) {
+    <app-stats-table [team]="gameResult()!.homeTeam" />
+    <app-stats-table [team]="gameResult()!.awayTeam" />
   }
 </div>
 

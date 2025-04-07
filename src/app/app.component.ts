@@ -1,9 +1,9 @@
 import { Component, OnInit, signal } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
-import { Team } from "./model/team.interface";
 import { TeamService } from "./service/team.service";
 import { StatsTableComponent } from "./stats-table/stats-table.component";
 import { Game } from "../simulation/Game";
+import { Team } from "./model/Team";
 
 @Component({
   selector: "app-root",
@@ -12,21 +12,22 @@ import { Game } from "../simulation/Game";
   styleUrl: "./app.component.scss",
 })
 export class AppComponent implements OnInit {
-  homeTeam = signal<Team>({ name: "", city: "", players: [] });
-  awayTeam = signal<Team>({ name: "", city: "", players: [] });
+  homeTeam: Team = { city: "", id: 0, name: "", players: [] };
+  awayTeam: Team = { city: "", id: 0, name: "", players: [] };
+  readonly gameResult = signal<Game | null>(null);
 
   constructor(private teamService: TeamService) {}
 
   ngOnInit(): void {
-    this.teamService.getTeam(1).subscribe((team) => this.homeTeam.set(team));
-    this.teamService.getTeam(2).subscribe((team) => this.awayTeam.set(team));
+    this.teamService.getTeam(1).subscribe((team) => (this.homeTeam = team));
+    this.teamService.getTeam(2).subscribe((team) => (this.awayTeam = team));
   }
 
   simulateGame(): void {
-    const game = new Game(this.homeTeam(), this.awayTeam());
+    if (this.homeTeam && this.awayTeam) {
+      const game = new Game(this.homeTeam, this.awayTeam);
 
-    game.simulateGame();
-    this.homeTeam.set(game.homeTeam);
-    this.awayTeam.set(game.awayTeam);
+      this.gameResult.set(game.simulateGame());
+    }
   }
 }

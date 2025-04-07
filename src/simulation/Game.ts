@@ -1,5 +1,5 @@
 import { Stats } from "../app/model/Stats";
-import { Team } from "../app/model/team.interface";
+import { Team } from "../app/model/Team";
 import { getRandomNumber, getRandomNumberBetween } from "./utils/random";
 
 export class Game {
@@ -25,7 +25,7 @@ export class Game {
     });
   }
 
-  simulateGame(): void {
+  simulateGame(): Game {
     console.log("Simulating game...");
     let gameClock = 720; // 12 minutes in seconds
 
@@ -50,6 +50,8 @@ export class Game {
       this.#quarter++;
       gameClock = this.#quarter <= 4 ? 720 : 300; // 12 minutes for first 4 quarters, 5 minutes for overtime
     }
+
+    return this;
   }
 
   #simPossession(): void {
