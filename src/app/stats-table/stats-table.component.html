@@ -22,6 +22,11 @@
               player.stats?.fieldGoalAttempts
             }}
           </td>
+          <td class="px-2 py-1">
+            {{ player.stats?.threePointMade }}/{{
+              player.stats?.threePointAttempts
+            }}
+          </td>
 
           <td class="px-2 py-1">{{ player.stats?.points }}</td>
         </tr>
@@ -36,6 +41,12 @@
             team().stats!.fieldGoalAttempts
           }}
         </td>
+        <td class="px-2 py-1">
+          {{ team().stats!.threePointMade }}/{{
+            team().stats!.threePointAttempts
+          }}
+        </td>
+
         <td class="px-2 py-1">
           {{ team().stats!.points }}
         </td>

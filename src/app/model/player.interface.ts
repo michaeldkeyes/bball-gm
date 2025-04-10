@@ -10,5 +10,7 @@ export interface Player {
 }
 
 interface Attributes {
-  shooting: number;
+  twoPointShooting: number;
+  threePointShooting: number;
+  threeTendency: number;
 }

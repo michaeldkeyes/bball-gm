@@ -12,8 +12,8 @@ import { Team } from "./model/Team";
   styleUrl: "./app.component.scss",
 })
 export class AppComponent implements OnInit {
-  homeTeam: Team = { city: "", id: 0, name: "", players: [] };
-  awayTeam: Team = { city: "", id: 0, name: "", players: [] };
+  homeTeam: Team | undefined;
+  awayTeam: Team | undefined;
   readonly gameResult = signal<Game | null>(null);
 
   constructor(private teamService: TeamService) {}
