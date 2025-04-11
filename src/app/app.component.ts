@@ -19,8 +19,28 @@ export class AppComponent implements OnInit {
   constructor(private teamService: TeamService) {}
 
   ngOnInit(): void {
-    this.teamService.getTeam(1).subscribe((team) => (this.homeTeam = team));
-    this.teamService.getTeam(2).subscribe((team) => (this.awayTeam = team));
+    this.teamService
+      .getTeam(1)
+      .subscribe(
+        (team) =>
+          (this.homeTeam = new Team(
+            team.id,
+            team.name,
+            team.city,
+            team.players
+          ))
+      );
+    this.teamService
+      .getTeam(2)
+      .subscribe(
+        (team) =>
+          (this.awayTeam = new Team(
+            team.id,
+            team.name,
+            team.city,
+            team.players
+          ))
+      );
   }
 
   simulateGame(): void {
