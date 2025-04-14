@@ -19,6 +19,7 @@ export class StatsTableComponent {
     "FG",
     "FG%",
     "3P",
+    "FT",
     "Points",
     "Rebounds",
     "Assists",

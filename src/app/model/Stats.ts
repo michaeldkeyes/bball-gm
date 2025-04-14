@@ -1,6 +1,8 @@
 export class Stats {
   #fieldGoalAttempts: number;
   #fieldGoalsMade: number;
+  #freeThrowAttempts: number;
+  #freeThrowsMade: number;
   #points: number;
   #pointsPerQuarter: number[];
   #threePointAttempts: number;
@@ -9,6 +11,8 @@ export class Stats {
   constructor() {
     this.#fieldGoalAttempts = 0;
     this.#fieldGoalsMade = 0;
+    this.#freeThrowAttempts = 0;
+    this.#freeThrowsMade = 0;
     this.#points = 0;
     this.#pointsPerQuarter = [];
     this.#threePointAttempts = 0;
@@ -29,6 +33,22 @@ export class Stats {
 
   set fieldGoalAttempts(value: number) {
     this.#fieldGoalAttempts = value;
+  }
+
+  get freeThrowAttempts(): number {
+    return this.#freeThrowAttempts;
+  }
+
+  set freeThrowAttempts(value: number) {
+    this.#freeThrowAttempts = value;
+  }
+
+  get freeThrowsMade(): number {
+    return this.#freeThrowsMade;
+  }
+
+  set freeThrowsMade(value: number) {
+    this.#freeThrowsMade = value;
   }
 
   get fieldGoalsMade(): number {

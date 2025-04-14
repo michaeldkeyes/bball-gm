@@ -16,21 +16,31 @@
           <td class="px-2 py-1">
             {{ player.firstName }} {{ player.lastName }}
           </td>
+
           <td class="px-2 py-1">{{ player.position }}</td>
+
           <td class="px-2 py-1">
             {{ player.stats?.fieldGoalsMade }}/{{
               player.stats?.fieldGoalAttempts
             }}
           </td>
+
           <td class="px-2 py-1">
             {{
               player.stats!.fieldGoalsMade / player.stats!.fieldGoalAttempts
                 | percent: "1.1-1"
             }}
           </td>
+
           <td class="px-2 py-1">
             {{ player.stats?.threePointMade }}/{{
               player.stats?.threePointAttempts
+            }}
+          </td>
+
+          <td class="px-2 py-1">
+            {{ player.stats?.freeThrowsMade }}/{{
+              player.stats?.freeThrowAttempts
             }}
           </td>
 
@@ -58,6 +68,12 @@
         <td class="px-2 py-1">
           {{ team().stats!.threePointMade }}/{{
             team().stats!.threePointAttempts
+          }}
+        </td>
+
+        <td class="px-2 py-1">
+          {{ team().stats!.freeThrowsMade }}/{{
+            team().stats!.freeThrowAttempts
           }}
         </td>
 
