@@ -1,22 +1,23 @@
 import { Player } from "./player.interface";
 import { Stats } from "./Stats";
 
-// export interface Team {
-//   id: number;
-//   name: string;
-//   city: string;
-//   players: Player[];
-//   stats?: Stats;
-// }
 export class Team {
   #id: number;
+  #abbreviation: string;
   #name: string;
   #city: string;
   #players: Player[];
   #stats?: Stats;
 
-  constructor(id: number, name: string, city: string, players: Player[]) {
+  constructor(
+    id: number,
+    abbreviation: string,
+    name: string,
+    city: string,
+    players: Player[]
+  ) {
     this.#id = id;
+    this.#abbreviation = abbreviation;
     this.#name = name;
     this.#city = city;
     this.#players = players;
@@ -28,6 +29,10 @@ export class Team {
 
   get id(): number {
     return this.#id;
+  }
+
+  get abbreviation(): string {
+    return this.#abbreviation;
   }
 
   get name(): string {

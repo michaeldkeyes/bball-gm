@@ -33,8 +33,8 @@ export class Game {
       this.#quarter <= 4 ||
       this.#homeTeam.stats!.points === this.#awayTeam.stats!.points
     ) {
-      // this.#homeTeam.stats!.pointsPerQuarter.push(0);
-      // this.#awayTeam.stats!.pointsPerQuarter.push(0);
+      this.#homeTeam.stats!.pointsPerQuarter.push(0);
+      this.#awayTeam.stats!.pointsPerQuarter.push(0);
 
       while (gameClock > 0) {
         const timeOfPossession = getRandomNumberBetween(10, 24); // 10 to 24 seconds
@@ -50,6 +50,8 @@ export class Game {
       this.#quarter++;
       gameClock = this.#quarter <= 4 ? 720 : 300; // 12 minutes for first 4 quarters, 5 minutes for overtime
     }
+
+    console.log(this.#homeTeam.stats!.pointsPerQuarter);
 
     return this;
   }
@@ -87,13 +89,12 @@ export class Game {
         this.#offense.stats!.threePointMade += 1;
         player.stats!.points += 3;
         this.#offense.stats!.points += 3; // Assuming a 3-point shot
-        //this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 3; // Update points per quarter
+        this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 3; // Update points per quarter
       } else {
         player.stats!.points += 2;
         this.#offense.stats!.points += 2;
+        this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 2; // Update points per quarter
       }
-
-      //this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 2; // Update points per quarter
     }
   }
 
@@ -103,5 +104,13 @@ export class Game {
 
   get awayTeam(): Team {
     return this.#awayTeam;
+  }
+
+  get quarter(): number {
+    return this.#quarter;
+  }
+
+  getTeams(): Team[] {
+    return [this.#homeTeam, this.#awayTeam];
   }
 }

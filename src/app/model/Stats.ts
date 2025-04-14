@@ -2,6 +2,7 @@ export class Stats {
   #fieldGoalAttempts: number;
   #fieldGoalsMade: number;
   #points: number;
+  #pointsPerQuarter: number[];
   #threePointAttempts: number;
   #threePointMade: number;
 
@@ -9,6 +10,7 @@ export class Stats {
     this.#fieldGoalAttempts = 0;
     this.#fieldGoalsMade = 0;
     this.#points = 0;
+    this.#pointsPerQuarter = [];
     this.#threePointAttempts = 0;
     this.#threePointMade = 0;
   }
@@ -35,6 +37,10 @@ export class Stats {
 
   set fieldGoalsMade(value: number) {
     this.#fieldGoalsMade = value;
+  }
+
+  get pointsPerQuarter(): number[] {
+    return this.#pointsPerQuarter;
   }
 
   get threePointAttempts(): number {

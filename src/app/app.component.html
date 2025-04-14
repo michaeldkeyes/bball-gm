@@ -10,10 +10,24 @@
     </button>
   </div>
 
-  @if (gameResult()) {
-    <app-stats-table [team]="gameResult()!.homeTeam" />
-    <app-stats-table [team]="gameResult()!.awayTeam" />
-  }
+  <div class="mb-3">
+    @if (gameResult()) {
+      <div class="flex justify-center">
+        <h2>{{ gameResult()!.homeTeam.fullName() }} &nbsp;</h2>
+        <h2>{{ gameResult()!.homeTeam.stats!.points }} &nbsp;</h2>
+        <span> - &nbsp; </span>
+        <h2>{{ gameResult()!.awayTeam.fullName() }} &nbsp;</h2>
+        <h2>{{ gameResult()!.awayTeam.stats!.points }} &nbsp;</h2>
+      </div>
+
+      <app-team-ppqtable [game]="gameResult()" />
+
+      <app-stats-table [team]="gameResult()!.homeTeam" />
+      <app-stats-table [team]="gameResult()!.awayTeam" />
+    } @else {
+      <p class="mt-4">No game has been simulated yet</p>
+    }
+  </div>
 </div>
 
 <router-outlet />

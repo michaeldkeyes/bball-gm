@@ -4,10 +4,11 @@ import { TeamService } from "./service/team.service";
 import { StatsTableComponent } from "./stats-table/stats-table.component";
 import { Game } from "../simulation/Game";
 import { Team } from "./model/Team";
+import { TeamPpqtableComponent } from "./team-ppqtable/team-ppqtable.component";
 
 @Component({
   selector: "app-root",
-  imports: [RouterOutlet, StatsTableComponent],
+  imports: [RouterOutlet, StatsTableComponent, TeamPpqtableComponent],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",
 })
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
         (team) =>
           (this.homeTeam = new Team(
             team.id,
+            team.abbreviation,
             team.name,
             team.city,
             team.players
@@ -36,6 +38,7 @@ export class AppComponent implements OnInit {
         (team) =>
           (this.awayTeam = new Team(
             team.id,
+            team.abbreviation,
             team.name,
             team.city,
             team.players

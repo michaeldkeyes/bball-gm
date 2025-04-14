@@ -1,1 +1,31 @@
-<p>team-ppqtable works!</p>
+<table class="m-auto mb-5 border-y border-solid border-black text-center">
+  <thead>
+    <tr class="border-y border-solid border-black">
+      <th></th>
+      @for (
+        quarter of [].constructor(game()!.quarter - 1);
+        track $index;
+        let index = $index
+      ) {
+        <th class="px-1">Q{{ index + 1 }}</th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (team of game()!.getTeams(); track $index) {
+      <tr class="border-y border-solid border-black">
+        <td class="pr-2">
+          {{ team.abbreviation }}
+        </td>
+        @for (points of team.stats!.pointsPerQuarter; track $index) {
+          <td class="px-1">
+            {{ points }}
+          </td>
+        }
+        <td class="px-1">
+          {{ team.stats!.points }}
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
