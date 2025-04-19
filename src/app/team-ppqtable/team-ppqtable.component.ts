@@ -1,13 +1,12 @@
 import { Component, input } from "@angular/core";
-import { GameResult } from "../../simulation/GameResult";
+import { Game } from "../../simulation/Game";
 
 @Component({
   selector: "app-team-ppqtable",
-  standalone: true,
   imports: [],
   templateUrl: "./team-ppqtable.component.html",
   styleUrl: "./team-ppqtable.component.scss",
 })
-export class TeamPPQTableComponent {
-  gameResult = input.required<GameResult>();
+export class TeamPpqtableComponent {
+  readonly game = input.required<Game | null>(); // This will never be null
 }

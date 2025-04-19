@@ -1,40 +1,50 @@
 <div class="m-auto w-11/12 text-center">
-  <h2>{{ team().getFullName() }}</h2>
-  <table class="mb-5 w-full">
+  <h2>{{ team().fullName() }}</h2>
+  <table class="mb-5 w-full table-fixed border-2 border-solid border-black">
     <thead class="border-y-2 border-solid border-black">
       <tr>
         @for (header of headers; track $index) {
-          <th class="bg-gray-800 px-4 py-2">
+          <th class="bg-gray-800 px-2 py-2">
             {{ header }}
           </th>
         }
       </tr>
     </thead>
     <tbody class="border-y-2 border-solid border-black">
-      @for (player of team().getPlayers(); track $index; let i = $index) {
+      @for (player of team().players; track $index; let i = $index) {
         <tr [ngClass]="i % 2 === 0 ? 'bg-slate-900' : 'bg-gray-800'">
-          <td class="px-2 py-1">{{ player.getFullName() }}</td>
-          <td class="px-2 py-1">{{ player.getPosition() }}</td>
           <td class="px-2 py-1">
-            {{ player.getFieldGoalMakes() }}/{{ player.getFieldGoalAttempts() }}
+            {{ player.firstName }} {{ player.lastName }}
           </td>
+
+          <td class="px-2 py-1">{{ player.position }}</td>
+
+          <td class="px-2 py-1">
+            {{ player.stats?.fieldGoalsMade }}/{{
+              player.stats?.fieldGoalAttempts
+            }}
+          </td>
+
           <td class="px-2 py-1">
             {{
-              player.getFieldGoalMakes() / player.getFieldGoalAttempts()
+              player.stats!.fieldGoalsMade / player.stats!.fieldGoalAttempts
                 | percent: "1.1-1"
             }}
           </td>
+
           <td class="px-2 py-1">
-            {{ player.getThreePointMakes() }}/{{
-              player.getThreePointAttempts()
+            {{ player.stats?.threePointMade }}/{{
+              player.stats?.threePointAttempts
             }}
           </td>
+
           <td class="px-2 py-1">
-            {{ player.getStats().getFreeThrowMakes() }}/{{
-              player.getStats().getFreeThrowAttempts()
+            {{ player.stats?.freeThrowsMade }}/{{
+              player.stats?.freeThrowAttempts
             }}
           </td>
-          <td class="px-2 py-1">{{ player.getPoints() }}</td>
+
+          <td class="px-2 py-1">{{ player.stats?.points }}</td>
         </tr>
       }
     </tbody>
@@ -43,26 +53,33 @@
         <td class="px-2 py-1">Totals</td>
         <td class="px-2 py-1"></td>
         <td class="px-2 py-1">
-          {{ team().getStats().getFieldGoalMakes() }}/{{
-            team().getStats().getFieldGoalAttempts()
+          {{ team().stats!.fieldGoalsMade }}/{{
+            team().stats!.fieldGoalAttempts
           }}
         </td>
+
         <td class="px-2 py-1">
           {{
-            team().getStats().getFieldGoalMakes() /
-              team().getStats().getFieldGoalAttempts() | percent: "1.1-1"
+            team().stats!.fieldGoalsMade / team().stats!.fieldGoalAttempts
+              | percent: "1.1-1"
           }}
         </td>
+
         <td class="px-2 py-1">
-          {{ team().getStats().getThreePointMakes() }}/{{
-            team().getStats().getThreePointAttempts()
+          {{ team().stats!.threePointMade }}/{{
+            team().stats!.threePointAttempts
           }}
         </td>
+
         <td class="px-2 py-1">
-          {{ team().getStats().getFreeThrowMakes() }} /
-          {{ team().getStats().getFreeThrowAttempts() }}
+          {{ team().stats!.freeThrowsMade }}/{{
+            team().stats!.freeThrowAttempts
+          }}
         </td>
-        <td class="px-2 py-1">{{ team().getStats().getPoints() }}</td>
+
+        <td class="px-2 py-1">
+          {{ team().stats!.points }}
+        </td>
       </tr>
     </tfoot>
   </table>

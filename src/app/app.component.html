@@ -4,26 +4,26 @@
   <div>
     <p>Click the button below to simulate a game</p>
     <button
-      (click)="simulateGame()"
-      class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+      class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
+      (click)="simulateGame()">
       Simulate Game
     </button>
   </div>
 
   <div class="mb-3">
-    @if (gameResult().getIsFinal() === true) {
+    @if (gameResult()) {
       <div class="flex justify-center">
-        <h2>{{ homeTeam().getFullName() }} &nbsp;</h2>
-        <h2>{{ homeTeam().getPoints() }} &nbsp;</h2>
+        <h2>{{ gameResult()!.homeTeam.fullName() }} &nbsp;</h2>
+        <h2>{{ gameResult()!.homeTeam.stats!.points }} &nbsp;</h2>
         <span> - &nbsp; </span>
-        <h2>{{ awayTeam().getFullName() }} &nbsp;</h2>
-        <h2>{{ awayTeam().getPoints() }} &nbsp;</h2>
+        <h2>{{ gameResult()!.awayTeam.fullName() }} &nbsp;</h2>
+        <h2>{{ gameResult()!.awayTeam.stats!.points }} &nbsp;</h2>
       </div>
 
-      <app-team-ppqtable [gameResult]="gameResult()" />
+      <app-team-ppqtable [game]="gameResult()" />
 
-      <app-stats-table [team]="homeTeam()" />
-      <app-stats-table [team]="awayTeam()" />
+      <app-stats-table [team]="gameResult()!.homeTeam" />
+      <app-stats-table [team]="gameResult()!.awayTeam" />
     } @else {
       <p class="mt-4">No game has been simulated yet</p>
     }

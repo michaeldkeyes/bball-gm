@@ -1,45 +1,56 @@
-import { Component, computed, signal } from "@angular/core";
+import { Component, OnInit, signal } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
-import { Game } from "../simulation/Game";
-import { Team } from "../simulation/Team";
-import { Player } from "../simulation/Player";
-import { GameResult } from "../simulation/GameResult";
+import { TeamService } from "./service/team.service";
 import { StatsTableComponent } from "./stats-table/stats-table.component";
-import { TeamPPQTableComponent } from "./team-ppqtable/team-ppqtable.component";
+import { Game } from "../simulation/Game";
+import { Team } from "./model/Team";
+import { TeamPpqtableComponent } from "./team-ppqtable/team-ppqtable.component";
 
 @Component({
   selector: "app-root",
-  standalone: true,
-  imports: [RouterOutlet, StatsTableComponent, TeamPPQTableComponent],
+  imports: [RouterOutlet, StatsTableComponent, TeamPpqtableComponent],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",
 })
-export class AppComponent {
-  gameResult = signal<GameResult>(new GameResult());
-  homeTeam = computed(() => this.gameResult().getTeams()[0].team);
-  awayTeam = computed(() => this.gameResult().getTeams()[1].team);
+export class AppComponent implements OnInit {
+  homeTeam: Team | undefined;
+  awayTeam: Team | undefined;
+  readonly gameResult = signal<Game | null>(null);
+
+  constructor(private teamService: TeamService) {}
+
+  ngOnInit(): void {
+    this.teamService
+      .getTeam(1)
+      .subscribe(
+        (team) =>
+          (this.homeTeam = new Team(
+            team.id,
+            team.abbreviation,
+            team.name,
+            team.city,
+            team.players
+          ))
+      );
+    this.teamService
+      .getTeam(2)
+      .subscribe(
+        (team) =>
+          (this.awayTeam = new Team(
+            team.id,
+            team.abbreviation,
+            team.name,
+            team.city,
+            team.players
+          ))
+      );
+  }
 
   simulateGame(): void {
-    const homePlayers = [
-      new Player("LeBron", "James", "SF"),
-      new Player("Anthony", "Davis", "PF"),
-      new Player("Dwight", "Howard", "C"),
-      new Player("Avery", "Bradley", "PG"),
-      new Player("Danny", "Green", "SG"),
-    ];
-    const homeTeam = new Team("Los Angeles", "Earthquakes", "LA", homePlayers);
+    if (this.homeTeam && this.awayTeam) {
+      const game = new Game(this.homeTeam, this.awayTeam);
 
-    const awayPlayers = [
-      new Player("Diana", "Taurasi", "SF"),
-      new Player("Brittney", "Griner", "PF"),
-      new Player("Skylar", "Diggins-Smith", "PG"),
-      new Player("Bria", "Hartley", "SG"),
-      new Player("Alanna", "Smith", "C"),
-    ];
-    const awayTeam = new Team("New York", "Liberty", "NY", awayPlayers);
-
-    const game = new Game(homeTeam, awayTeam);
-
-    this.gameResult.set(game.simulateGame());
+      this.gameResult.set(game.simulateGame());
+    }
   }
 }

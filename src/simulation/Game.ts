@@ -1,148 +1,170 @@
-import { GameResult } from "./GameResult";
-import { Player } from "./Player";
-import { Team } from "./Team";
+import { Player } from "../app/model/player.interface";
+import { Stats } from "../app/model/Stats";
+import { Team } from "../app/model/Team";
 import { getRandomNumber, getRandomNumberBetween } from "./utils/random";
 
+const FREE_THROW_RATE_FOR_TWO = 150; // 15% chance of getting fouled on a two point shot
+const FREE_THROW_RATE_FOR_THREE = 15; // 1.5% chance of getting fouled on a three point shot
+
 export class Game {
-  private homeTeam: Team;
-  private awayTeam: Team;
-
-  private offense: Team;
-
-  private quarter;
+  #homeTeam: Team;
+  #awayTeam: Team;
+  #offense: Team;
+  #quarter: number;
 
   constructor(homeTeam: Team, awayTeam: Team) {
-    this.homeTeam = homeTeam;
-    this.awayTeam = awayTeam;
+    this.#homeTeam = homeTeam;
+    this.#awayTeam = awayTeam;
+    this.#offense = getRandomNumber(2) === 0 ? homeTeam : awayTeam;
+    this.#quarter = 1;
 
-    this.offense = getRandomNumber(2) === 0 ? homeTeam : awayTeam;
+    this.#homeTeam.stats = new Stats();
+    this.#homeTeam.players.forEach((player) => {
+      player.stats = new Stats();
+    });
 
-    this.quarter = 1;
+    this.#awayTeam.stats = new Stats();
+    this.#awayTeam.players.forEach((player) => {
+      player.stats = new Stats();
+    });
   }
 
-  simulateGame(): GameResult {
-    let gameClock = 720;
+  simulateGame(): Game {
+    console.log("Simulating game...");
+    let gameClock = 720; // 12 minutes in seconds
 
     while (
-      this.quarter <= 4 ||
-      this.homeTeam.getPoints() === this.awayTeam.getPoints()
+      this.#quarter <= 4 ||
+      this.#homeTeam.stats!.points === this.#awayTeam.stats!.points
     ) {
-      this.homeTeam.getPointsPerQuarter().push(0);
-      this.awayTeam.getPointsPerQuarter().push(0);
+      this.#homeTeam.stats!.pointsPerQuarter.push(0);
+      this.#awayTeam.stats!.pointsPerQuarter.push(0);
 
       while (gameClock > 0) {
-        const timeOfPossession = getRandomNumberBetween(10, 24);
-
+        const timeOfPossession = getRandomNumberBetween(10, 24); // 10 to 24 seconds
         gameClock -= timeOfPossession;
 
-        this.simPossession();
+        this.#simPossession();
 
-        this.offense =
-          this.offense === this.homeTeam ? this.awayTeam : this.homeTeam;
+        this.#offense =
+          this.#offense === this.#homeTeam ? this.#awayTeam : this.#homeTeam;
       }
 
-      this.quarter++;
-      gameClock = this.quarter <= 4 ? 720 : 300;
+      // End of quarter
+      this.#quarter++;
+      gameClock = this.#quarter <= 4 ? 720 : 300; // 12 minutes for first 4 quarters, 5 minutes for overtime
     }
 
-    const homePoints = this.homeTeam.getPoints();
-    const awayPoints = this.awayTeam.getPoints();
+    console.log(this.#homeTeam.stats!.pointsPerQuarter);
 
-    const gameResult: GameResult = new GameResult(
-      [
-        {
-          team: this.homeTeam,
-          isWinner: homePoints > awayPoints,
-          pointsPerQuarter: this.homeTeam.getPointsPerQuarter(),
-        },
-        {
-          team: this.awayTeam,
-          isWinner: awayPoints > homePoints,
-          pointsPerQuarter: this.awayTeam.getPointsPerQuarter(),
-        },
-      ],
-      this.quarter,
-      true
-    );
-
-    return gameResult;
+    return this;
   }
 
-  private simPossession(): void {
+  #simPossession(): void {
     // Simulate a possession
     // Get a random player from the offense
-    const player = this.offense.getRandomPlayer();
+    const player =
+      this.#offense.players[getRandomNumber(this.#offense.players.length)];
 
-    // Get a random number between 0 and 100
-    const shot = getRandomNumber(100);
-    // Determine if the player will shoot a 2 or 3
-    const shotType = getRandomNumber(100);
+    // Determine if the player will shoot a 2-point or 3-point shot
+    const shootThree = getRandomNumber(1000) <= player.attributes.threeTendency;
 
-    const playerStats = player.getStats();
-    const offenseStats = this.offense.getStats();
+    let shotSuccess = false;
+    let isFouled = false;
+    let numberOfFreeThrows = 0;
 
-    playerStats.incrementFieldGoalAttempts();
-    offenseStats.incrementFieldGoalAttempts();
-
-    const isFouled = getRandomNumber(100) <= player.getFreeThrowRate();
-
-    if (shotType <= player.getThreePointTendency()) {
-      playerStats.incrementThreePointAttempts();
-      offenseStats.incrementThreePointAttempts();
-      // If the shot is less than the player's three point percentage, it's good
-      if (shot <= player.getThreePointShooting()) {
-        playerStats.incrementThreePointMakes();
-        offenseStats.incrementThreePointMakes();
-        playerStats.incrementPoints(3, this.quarter);
-        offenseStats.incrementPoints(3, this.quarter);
-        playerStats.incrementFieldGoalMakes();
-        offenseStats.incrementFieldGoalMakes();
-
-        if (isFouled) {
-          this.shootFreeThrow(player, 1);
-        }
-      } else if (isFouled) {
-        playerStats.decrementFieldGoalAttempts();
-        playerStats.decrementThreePointAttempts();
-        offenseStats.decrementFieldGoalAttempts();
-        offenseStats.decrementThreePointAttempts();
-        this.shootFreeThrow(player, 3);
+    if (shootThree) {
+      player.stats!.threePointAttempts += 1;
+      this.#offense.stats!.threePointAttempts += 1;
+      isFouled = this.#isFouled(FREE_THROW_RATE_FOR_THREE);
+      if (isFouled) {
+        numberOfFreeThrows = 3;
       }
+      shotSuccess =
+        getRandomNumber(1000) <= player.attributes.threePointShooting;
     } else {
-      // If the shot is less than the player's two point percentage, it's good
-      if (shot <= player.getTwoPointShooting()) {
-        playerStats.incrementPoints(2, this.quarter);
-        offenseStats.incrementPoints(2, this.quarter);
-        playerStats.incrementFieldGoalMakes();
-        offenseStats.incrementFieldGoalMakes();
-
-        if (isFouled) {
-          this.shootFreeThrow(player, 1);
-        }
-      } else if (isFouled) {
-        playerStats.decrementFieldGoalAttempts();
-        offenseStats.decrementFieldGoalAttempts();
-        this.shootFreeThrow(player, 2);
+      isFouled = this.#isFouled(FREE_THROW_RATE_FOR_TWO);
+      numberOfFreeThrows = 2;
+      if (isFouled) {
+        numberOfFreeThrows = 2;
       }
+      shotSuccess = getRandomNumber(1000) <= player.attributes.twoPointShooting;
+    }
+
+    // Update the player's stats
+    player.stats!.fieldGoalAttempts += 1;
+    // Update the team's stats
+    this.#offense.stats!.fieldGoalAttempts += 1;
+    if (shotSuccess) {
+      player.stats!.fieldGoalsMade += 1;
+      this.#offense.stats!.fieldGoalsMade += 1;
+
+      if (shootThree) {
+        player.stats!.threePointMade += 1;
+        this.#offense.stats!.threePointMade += 1;
+        player.stats!.points += 3;
+        this.#offense.stats!.points += 3; // Assuming a 3-point shot
+        this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 3; // Update points per quarter
+      } else {
+        player.stats!.points += 2;
+        this.#offense.stats!.points += 2;
+        this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 2; // Update points per quarter
+      }
+
+      if (isFouled) {
+        this.#simFreeThrows(player, 1); // And 1
+      }
+    } else if (isFouled) {
+      this.#simFreeThrows(player, numberOfFreeThrows); // If the shot was missed and the player was fouled, shoot free throws
+      // Take away the field goal attempt from the player and team stats
+      player.stats!.fieldGoalAttempts -= 1;
+      this.#offense.stats!.fieldGoalAttempts -= 1;
     }
   }
 
-  private shootFreeThrow(player: Player, attempts: number): void {
-    const playerStats = player.getStats();
-    const offenseStats = this.offense.getStats();
+  #isFouled(freeThrowRate: number): boolean {
+    // Check if the player was fouled on the shot
+    const foulChance = getRandomNumber(1000);
 
-    for (let i = 0; i < attempts; i++) {
-      playerStats.incrementFreeThrowAttempts();
-      offenseStats.incrementFreeThrowAttempts();
-
-      const shot = getRandomNumber(100);
-
-      if (shot <= player.getFreeThrowShooting()) {
-        playerStats.incrementFreeThrowMakes();
-        offenseStats.incrementFreeThrowMakes();
-        playerStats.incrementPoints(1, this.quarter);
-        offenseStats.incrementPoints(1, this.quarter);
-      }
+    if (foulChance <= freeThrowRate) {
+      return true;
     }
+
+    return false; // No foul
+  }
+
+  #simFreeThrows(player: Player, numberOfFreeThrows: number): void {
+    for (let i = 0; i < numberOfFreeThrows; i++) {
+      // Simulate a free throw
+      const freeThrowSuccess =
+        getRandomNumber(1000) <= player.attributes.freeThrowShooting;
+
+      if (freeThrowSuccess) {
+        player.stats!.freeThrowsMade += 1;
+        this.#offense.stats!.freeThrowsMade += 1;
+        player.stats!.points += 1;
+        this.#offense.stats!.points += 1;
+        this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 1;
+      }
+
+      player.stats!.freeThrowAttempts += 1;
+      this.#offense.stats!.freeThrowAttempts += 1;
+    }
+  }
+
+  get homeTeam(): Team {
+    return this.#homeTeam;
+  }
+
+  get awayTeam(): Team {
+    return this.#awayTeam;
+  }
+
+  get quarter(): number {
+    return this.#quarter;
+  }
+
+  getTeams(): Team[] {
+    return [this.#homeTeam, this.#awayTeam];
   }
 }

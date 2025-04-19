@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TeamPPQTableComponent } from './team-ppqtable.component';
+import { TeamPpqtableComponent } from './team-ppqtable.component';
 
-describe('TeamPPQTableComponent', () => {
-  let component: TeamPPQTableComponent;
-  let fixture: ComponentFixture<TeamPPQTableComponent>;
+describe('TeamPpqtableComponent', () => {
+  let component: TeamPpqtableComponent;
+  let fixture: ComponentFixture<TeamPpqtableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TeamPPQTableComponent]
+      imports: [TeamPpqtableComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TeamPPQTableComponent);
+    fixture = TestBed.createComponent(TeamPpqtableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

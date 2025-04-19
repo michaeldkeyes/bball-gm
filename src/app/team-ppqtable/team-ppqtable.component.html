@@ -3,25 +3,29 @@
     <tr class="border-y border-solid border-black">
       <th></th>
       @for (
-        quarter of [].constructor(gameResult().getQuarters() - 1);
+        quarter of [].constructor(game()!.quarter - 1);
         track $index;
         let index = $index
       ) {
         <th class="px-1">Q{{ index + 1 }}</th>
       }
-      <th class="px-1">F</th>
+      <th class="px-1">Final</th>
     </tr>
   </thead>
   <tbody>
-    @for (teamResult of gameResult().getTeams(); track $index) {
+    @for (team of game()!.getTeams(); track $index) {
       <tr class="border-y border-solid border-black">
         <td class="pr-2">
-          {{ teamResult.team.getAbbreviation() }}
+          {{ team.abbreviation }}
         </td>
-        @for (points of teamResult.team.getPointsPerQuarter(); track $index) {
-          <td class="px-1">{{ points }}</td>
+        @for (points of team.stats!.pointsPerQuarter; track $index) {
+          <td class="px-1">
+            {{ points }}
+          </td>
         }
-        <td class="px-1">{{ teamResult.team.getPoints() }}</td>
+        <td class="px-1">
+          {{ team.stats!.points }}
+        </td>
       </tr>
     }
   </tbody>
