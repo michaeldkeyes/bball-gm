@@ -1,32 +1,22 @@
 import { Player } from "../app/model/player.interface";
-import { Stats } from "../app/model/Stats";
 import { Team } from "../app/model/Team";
+import { TeamGame } from "../app/model/TeamGame";
 import { getRandomNumber, getRandomNumberBetween } from "./utils/random";
 
 const FREE_THROW_RATE_FOR_TWO = 150; // 15% chance of getting fouled on a two point shot
 const FREE_THROW_RATE_FOR_THREE = 15; // 1.5% chance of getting fouled on a three point shot
 
 export class Game {
-  #homeTeam: Team;
-  #awayTeam: Team;
-  #offense: Team;
+  #homeTeam: TeamGame;
+  #awayTeam: TeamGame;
+  #offense: TeamGame;
   #quarter: number;
 
   constructor(homeTeam: Team, awayTeam: Team) {
-    this.#homeTeam = homeTeam;
-    this.#awayTeam = awayTeam;
-    this.#offense = getRandomNumber(2) === 0 ? homeTeam : awayTeam;
+    this.#homeTeam = new TeamGame(homeTeam);
+    this.#awayTeam = new TeamGame(awayTeam);
+    this.#offense = getRandomNumber(2) === 0 ? this.#homeTeam : this.#awayTeam;
     this.#quarter = 1;
-
-    this.#homeTeam.stats = new Stats();
-    this.#homeTeam.players.forEach((player) => {
-      player.stats = new Stats();
-    });
-
-    this.#awayTeam.stats = new Stats();
-    this.#awayTeam.players.forEach((player) => {
-      player.stats = new Stats();
-    });
   }
 
   simulateGame(): Game {
@@ -152,11 +142,11 @@ export class Game {
     }
   }
 
-  get homeTeam(): Team {
+  get homeTeam(): TeamGame {
     return this.#homeTeam;
   }
 
-  get awayTeam(): Team {
+  get awayTeam(): TeamGame {
     return this.#awayTeam;
   }
 
@@ -164,7 +154,7 @@ export class Game {
     return this.#quarter;
   }
 
-  getTeams(): Team[] {
+  getTeams(): TeamGame[] {
     return [this.#homeTeam, this.#awayTeam];
   }
 }

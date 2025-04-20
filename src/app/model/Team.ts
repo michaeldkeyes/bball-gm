@@ -1,13 +1,17 @@
 import { Player } from "./player.interface";
 import { Stats } from "./Stats";
 
+/**
+ * Team class represents a basketball team with its players and stats.
+ * It provides methods to get team details and manage player stats.
+ */
 export class Team {
-  #id: number;
-  #abbreviation: string;
-  #name: string;
-  #city: string;
-  #players: Player[];
-  #stats?: Stats;
+  _id: number;
+  _abbreviation: string;
+  _name: string;
+  _city: string;
+  _players: Player[];
+  _stats?: Stats;
 
   constructor(
     id: number,
@@ -16,42 +20,42 @@ export class Team {
     city: string,
     players: Player[]
   ) {
-    this.#id = id;
-    this.#abbreviation = abbreviation;
-    this.#name = name;
-    this.#city = city;
-    this.#players = players;
+    this._id = id;
+    this._abbreviation = abbreviation;
+    this._name = name;
+    this._city = city;
+    this._players = players;
   }
 
   fullName(): string {
-    return `${this.#city} ${this.#name}`;
+    return `${this._city} ${this._name}`;
   }
 
   get id(): number {
-    return this.#id;
+    return this._id;
   }
 
   get abbreviation(): string {
-    return this.#abbreviation;
+    return this._abbreviation;
   }
 
   get name(): string {
-    return this.#name;
+    return this._name;
   }
 
   get city(): string {
-    return this.#city;
+    return this._city;
   }
 
   get players(): Player[] {
-    return this.#players;
+    return this._players;
   }
 
   get stats(): Stats | undefined {
-    return this.#stats;
+    return this._stats;
   }
 
   set stats(value: Stats | undefined) {
-    this.#stats = value;
+    this._stats = value;
   }
 }

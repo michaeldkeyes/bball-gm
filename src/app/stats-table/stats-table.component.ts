@@ -1,6 +1,6 @@
-import { Component, computed, Input, input } from "@angular/core";
+import { Component, input } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { Team } from "../model/Team";
+import { TeamGame } from "../model/TeamGame";
 
 @Component({
   selector: "app-stats-table",
@@ -9,9 +9,7 @@ import { Team } from "../model/Team";
   styleUrl: "./stats-table.component.scss",
 })
 export class StatsTableComponent {
-  readonly team = input.required<Team>();
-
-  fullTeamName = computed(() => `${this.team().city} ${this.team().name}`);
+  readonly team = input.required<TeamGame>();
 
   headers = [
     "Player",

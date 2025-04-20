@@ -1,3 +1,8 @@
+/**
+ * Stats class to hold the statistics of a player in a basketball game.
+ * It includes methods to get and set various stats like points, field goals made, free throws made, etc.
+ * The stats are initialized to zero and can be updated during the game simulation.
+ */
 export class Stats {
   #fieldGoalAttempts: number;
   #fieldGoalsMade: number;
