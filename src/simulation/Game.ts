@@ -3,8 +3,8 @@ import { Team } from "../app/model/Team";
 import { TeamGame } from "../app/model/TeamGame";
 import { getRandomNumber, getRandomNumberBetween } from "./utils/random";
 
-const FREE_THROW_RATE_FOR_TWO = 150; // 15% chance of getting fouled on a two point shot
-const FREE_THROW_RATE_FOR_THREE = 15; // 1.5% chance of getting fouled on a three point shot
+const FREE_THROW_RATE_FOR_TWO = 200; // 20% chance of getting fouled on a two point shot
+const FREE_THROW_RATE_FOR_THREE = 20; // 2% chance of getting fouled on a three point shot
 
 export class Game {
   #homeTeam: TeamGame;
@@ -17,27 +17,32 @@ export class Game {
     this.#awayTeam = new TeamGame(awayTeam);
     this.#offense = getRandomNumber(2) === 0 ? this.#homeTeam : this.#awayTeam;
     this.#quarter = 1;
+
+    this.#homeTeam.setPlayingTimes();
+    this.#awayTeam.setPlayingTimes();
   }
 
   simulateGame(): Game {
     console.log("Simulating game...");
     let gameClock = 720; // 12 minutes in seconds
 
-    while (
-      this.#quarter <= 4 ||
-      this.#homeTeam.stats!.points === this.#awayTeam.stats!.points
-    ) {
+    while (this.#quarter <= 4 || this.#homeTeam.stats!.points === this.#awayTeam.stats!.points) {
       this.#homeTeam.stats!.pointsPerQuarter.push(0);
       this.#awayTeam.stats!.pointsPerQuarter.push(0);
 
       while (gameClock > 0) {
-        const timeOfPossession = getRandomNumberBetween(10, 24); // 10 to 24 seconds
+        const timeOfPossession = getRandomNumberBetween(10, 25); // 10 to 24 seconds
         gameClock -= timeOfPossession;
+
+        this.#homeTeam.increaseMinutes(timeOfPossession);
+        this.#awayTeam.increaseMinutes(timeOfPossession);
 
         this.#simPossession();
 
-        this.#offense =
-          this.#offense === this.#homeTeam ? this.#awayTeam : this.#homeTeam;
+        this.#offense = this.#offense === this.#homeTeam ? this.#awayTeam : this.#homeTeam;
+
+        this.#homeTeam.substitutePlayers();
+        this.#awayTeam.substitutePlayers();
       }
 
       // End of quarter
@@ -45,16 +50,16 @@ export class Game {
       gameClock = this.#quarter <= 4 ? 720 : 300; // 12 minutes for first 4 quarters, 5 minutes for overtime
     }
 
-    console.log(this.#homeTeam.stats!.pointsPerQuarter);
-
     return this;
   }
 
   #simPossession(): void {
     // Simulate a possession
     // Get a random player from the offense
+    //const player =
+    //this.#offense.players[getRandomNumber(this.#offense.players.length)];
     const player =
-      this.#offense.players[getRandomNumber(this.#offense.players.length)];
+      this.#offense.playersOnCourt[getRandomNumber(this.#offense.playersOnCourt.length)];
 
     // Determine if the player will shoot a 2-point or 3-point shot
     const shootThree = getRandomNumber(1000) <= player.attributes.threeTendency;
@@ -70,8 +75,7 @@ export class Game {
       if (isFouled) {
         numberOfFreeThrows = 3;
       }
-      shotSuccess =
-        getRandomNumber(1000) <= player.attributes.threePointShooting;
+      shotSuccess = getRandomNumber(1000) <= player.attributes.threePointShooting;
     } else {
       isFouled = this.#isFouled(FREE_THROW_RATE_FOR_TWO);
       numberOfFreeThrows = 2;
@@ -126,8 +130,7 @@ export class Game {
   #simFreeThrows(player: Player, numberOfFreeThrows: number): void {
     for (let i = 0; i < numberOfFreeThrows; i++) {
       // Simulate a free throw
-      const freeThrowSuccess =
-        getRandomNumber(1000) <= player.attributes.freeThrowShooting;
+      const freeThrowSuccess = getRandomNumber(1000) <= player.attributes.freeThrowShooting;
 
       if (freeThrowSuccess) {
         player.stats!.freeThrowsMade += 1;

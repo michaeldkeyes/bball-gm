@@ -4,81 +4,81 @@
  * The stats are initialized to zero and can be updated during the game simulation.
  */
 export class Stats {
-  #fieldGoalAttempts: number;
-  #fieldGoalsMade: number;
-  #freeThrowAttempts: number;
-  #freeThrowsMade: number;
-  #points: number;
-  #pointsPerQuarter: number[];
-  #threePointAttempts: number;
-  #threePointMade: number;
+  _fieldGoalAttempts: number;
+  _fieldGoalsMade: number;
+  _freeThrowAttempts: number;
+  _freeThrowsMade: number;
+  _points: number;
+  _pointsPerQuarter: number[];
+  _threePointAttempts: number;
+  _threePointMade: number;
 
   constructor() {
-    this.#fieldGoalAttempts = 0;
-    this.#fieldGoalsMade = 0;
-    this.#freeThrowAttempts = 0;
-    this.#freeThrowsMade = 0;
-    this.#points = 0;
-    this.#pointsPerQuarter = [];
-    this.#threePointAttempts = 0;
-    this.#threePointMade = 0;
+    this._fieldGoalAttempts = 0;
+    this._fieldGoalsMade = 0;
+    this._freeThrowAttempts = 0;
+    this._freeThrowsMade = 0;
+    this._points = 0;
+    this._pointsPerQuarter = [];
+    this._threePointAttempts = 0;
+    this._threePointMade = 0;
   }
 
   get points(): number {
-    return this.#points;
+    return this._points;
   }
 
   set points(value: number) {
-    this.#points = value;
+    this._points = value;
   }
 
   get fieldGoalAttempts(): number {
-    return this.#fieldGoalAttempts;
+    return this._fieldGoalAttempts;
   }
 
   set fieldGoalAttempts(value: number) {
-    this.#fieldGoalAttempts = value;
+    this._fieldGoalAttempts = value;
   }
 
   get freeThrowAttempts(): number {
-    return this.#freeThrowAttempts;
+    return this._freeThrowAttempts;
   }
 
   set freeThrowAttempts(value: number) {
-    this.#freeThrowAttempts = value;
+    this._freeThrowAttempts = value;
   }
 
   get freeThrowsMade(): number {
-    return this.#freeThrowsMade;
+    return this._freeThrowsMade;
   }
 
   set freeThrowsMade(value: number) {
-    this.#freeThrowsMade = value;
+    this._freeThrowsMade = value;
   }
 
   get fieldGoalsMade(): number {
-    return this.#fieldGoalsMade;
+    return this._fieldGoalsMade;
   }
 
   set fieldGoalsMade(value: number) {
-    this.#fieldGoalsMade = value;
+    this._fieldGoalsMade = value;
   }
 
   get pointsPerQuarter(): number[] {
-    return this.#pointsPerQuarter;
+    return this._pointsPerQuarter;
   }
 
   get threePointAttempts(): number {
-    return this.#threePointAttempts;
+    return this._threePointAttempts;
   }
   set threePointAttempts(value: number) {
-    this.#threePointAttempts = value;
+    this._threePointAttempts = value;
   }
 
   get threePointMade(): number {
-    return this.#threePointMade;
+    return this._threePointMade;
   }
   set threePointMade(value: number) {
-    this.#threePointMade = value;
+    this._threePointMade = value;
   }
 }

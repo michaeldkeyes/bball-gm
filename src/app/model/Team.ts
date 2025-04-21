@@ -11,20 +11,22 @@ export class Team {
   _name: string;
   _city: string;
   _players: Player[];
-  _stats?: Stats;
+  _stats: Stats;
 
   constructor(
     id: number,
     abbreviation: string,
     name: string,
     city: string,
-    players: Player[]
+    players: Player[],
+    stats: Stats = new Stats()
   ) {
     this._id = id;
     this._abbreviation = abbreviation;
     this._name = name;
     this._city = city;
     this._players = players;
+    this._stats = stats;
   }
 
   fullName(): string {
@@ -51,11 +53,11 @@ export class Team {
     return this._players;
   }
 
-  get stats(): Stats | undefined {
+  get stats(): Stats {
     return this._stats;
   }
 
-  set stats(value: Stats | undefined) {
+  set stats(value: Stats) {
     this._stats = value;
   }
 }
