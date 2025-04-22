@@ -1,11 +1,16 @@
-import { Stats } from "./Stats";
+import { PlayerStats } from "./PlayerStats";
 
+/**
+ * Player interface represents a basketball player with their attributes and stats.
+ * It includes properties like first name, last name, position, attributes, and team ID.
+ * The attributes include shooting skills and tendencies.
+ */
 export interface Player {
   firstName: string;
   lastName: string;
   position: string;
   attributes: Attributes;
-  stats?: Stats;
+  stats?: PlayerStats;
   teamId: number;
 }
 
@@ -14,4 +19,11 @@ interface Attributes {
   twoPointShooting: number;
   threePointShooting: number;
   threeTendency: number;
+}
+
+export interface PlayerGame extends Player {
+  benchTime: number;
+  courtTime: number;
+  playingTime: number;
+  restTime: number;
 }
