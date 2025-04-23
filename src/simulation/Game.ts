@@ -1,10 +1,10 @@
-import { Player } from "../app/model/player.interface";
+import { Attributes, Player, PlayerGame } from "../app/model/player.interface";
 import { Team } from "../app/model/Team";
 import { TeamGame } from "../app/model/TeamGame";
 import { getRandomNumber, getRandomNumberBetween } from "./utils/random";
 
-const FREE_THROW_RATE_FOR_TWO = 200; // 20% chance of getting fouled on a two point shot
-const FREE_THROW_RATE_FOR_THREE = 20; // 2% chance of getting fouled on a three point shot
+const FREE_THROW_RATE_FOR_TWO = 230; // 23% chance of getting fouled on a two point shot
+const FREE_THROW_RATE_FOR_THREE = 23; // 2.3% chance of getting fouled on a three point shot
 
 export class Game {
   #homeTeam: TeamGame;
@@ -53,13 +53,29 @@ export class Game {
     return this;
   }
 
+  #choosePlayer(attr: keyof Attributes): PlayerGame {
+    const totalAttributeValue = this.#offense.playersOnCourt.reduce(
+      (sum, player) => sum + player.attributes[attr],
+      0
+    );
+    const randomNumber = getRandomNumber(totalAttributeValue);
+    let currentTotal = 0;
+
+    for (const player of this.#offense.playersOnCourt) {
+      currentTotal += player.attributes[attr];
+      if (randomNumber <= currentTotal) {
+        return player;
+      }
+    }
+
+    // Should never reach here if usage rates are set correctly
+    throw new Error("No player found for the given random number.");
+  }
+
   #simPossession(): void {
     // Simulate a possession
     // Get a random player from the offense
-    //const player =
-    //this.#offense.players[getRandomNumber(this.#offense.players.length)];
-    const player =
-      this.#offense.playersOnCourt[getRandomNumber(this.#offense.playersOnCourt.length)];
+    const player = this.#choosePlayer("usageRate");
 
     // Determine if the player will shoot a 2-point or 3-point shot
     const shootThree = getRandomNumber(1000) <= player.attributes.threeTendency;
