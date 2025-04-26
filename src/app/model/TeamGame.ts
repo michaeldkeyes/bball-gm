@@ -14,9 +14,6 @@ export class TeamGame extends Team {
 
   constructor(team: Team) {
     super(team._id, team.abbreviation, team.name, team.city, team.players);
-    this._abbreviation = team.abbreviation;
-    this._name = team.name;
-    this._city = team.city;
     this.#players = team.players.map((player) => {
       return {
         ...player,
@@ -31,7 +28,7 @@ export class TeamGame extends Team {
     this.#playersOnCourt = this.#players.slice(0, 5); // First 5 players on court
     this.#playersOnBench = this.#players.slice(5); // Remaining players on bench
 
-    this._stats = new Stats(); // Initialize stats for the team
+    this._stats = new Stats();
   }
 
   /**

@@ -14,11 +14,12 @@ export interface Player {
   teamId: number;
 }
 
-interface Attributes {
+export interface Attributes {
   freeThrowShooting: number;
   twoPointShooting: number;
   threePointShooting: number;
   threeTendency: number;
+  usageRate: number;
 }
 
 export interface PlayerGame extends Player {
