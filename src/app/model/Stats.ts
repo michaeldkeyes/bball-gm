@@ -10,6 +10,7 @@ export class Stats {
   _freeThrowsMade: number;
   _points: number;
   _pointsPerQuarter: number[];
+  _rebounds: number;
   _threePointAttempts: number;
   _threePointMade: number;
 
@@ -20,6 +21,7 @@ export class Stats {
     this._freeThrowsMade = 0;
     this._points = 0;
     this._pointsPerQuarter = [];
+    this._rebounds = 0;
     this._threePointAttempts = 0;
     this._threePointMade = 0;
   }
@@ -66,6 +68,14 @@ export class Stats {
 
   get pointsPerQuarter(): number[] {
     return this._pointsPerQuarter;
+  }
+
+  get rebounds(): number {
+    return this._rebounds;
+  }
+
+  set rebounds(value: number) {
+    this._rebounds = value;
   }
 
   get threePointAttempts(): number {

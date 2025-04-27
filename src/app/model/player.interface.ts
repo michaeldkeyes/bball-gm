@@ -16,6 +16,7 @@ export interface Player {
 
 export interface Attributes {
   freeThrowShooting: number;
+  rebounding: number;
   twoPointShooting: number;
   threePointShooting: number;
   threeTendency: number;

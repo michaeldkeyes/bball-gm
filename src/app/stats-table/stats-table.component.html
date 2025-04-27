@@ -34,7 +34,11 @@
           </td>
 
           <td class="px-2 py-1">
-            {{ player.stats?.freeThrowsMade }}/{{ player.stats?.freeThrowAttempts }}
+            {{ player.stats!.freeThrowsMade }}/{{ player.stats?.freeThrowAttempts }}
+          </td>
+
+          <td class="px-2 py-1">
+            {{ player.stats!.rebounds }}
           </td>
 
           <td class="px-2 py-1">{{ player.stats?.points }}</td>
@@ -47,23 +51,27 @@
         <td class="px-2 py-1"></td>
         <td class="px-2 py-1"></td>
         <td class="px-2 py-1">
-          {{ team().stats!.fieldGoalsMade }}/{{ team().stats!.fieldGoalAttempts }}
+          {{ team().stats.fieldGoalsMade }}/{{ team().stats!.fieldGoalAttempts }}
         </td>
 
         <td class="px-2 py-1">
-          {{ team().stats!.fieldGoalsMade / team().stats!.fieldGoalAttempts | percent: "1.1-1" }}
+          {{ team().stats.fieldGoalsMade / team().stats!.fieldGoalAttempts | percent: "1.1-1" }}
         </td>
 
         <td class="px-2 py-1">
-          {{ team().stats!.threePointMade }}/{{ team().stats!.threePointAttempts }}
+          {{ team().stats.threePointMade }}/{{ team().stats!.threePointAttempts }}
         </td>
 
         <td class="px-2 py-1">
-          {{ team().stats!.freeThrowsMade }}/{{ team().stats!.freeThrowAttempts }}
+          {{ team().stats.freeThrowsMade }}/{{ team().stats!.freeThrowAttempts }}
         </td>
 
         <td class="px-2 py-1">
-          {{ team().stats!.points }}
+          {{ team().stats.rebounds }}
+        </td>
+
+        <td class="px-2 py-1">
+          {{ team().stats.points }}
         </td>
       </tr>
     </tfoot>
