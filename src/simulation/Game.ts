@@ -3,8 +3,8 @@ import { Team } from "../app/model/Team";
 import { TeamGame } from "../app/model/TeamGame";
 import { getRandomNumber, getRandomNumberBetween } from "./utils/random";
 
-const FREE_THROW_RATE_FOR_TWO = 250; // 23% chance of getting fouled on a two point shot
-const FREE_THROW_RATE_FOR_THREE = 25; // 2.3% chance of getting fouled on a three point shot
+const FREE_THROW_RATE_FOR_TWO = 250; // 25% chance of getting fouled on a two point shot
+const FREE_THROW_RATE_FOR_THREE = 25; // 2.5% chance of getting fouled on a three point shot
 
 export class Game {
   #homeTeam: TeamGame;
@@ -32,12 +32,20 @@ export class Game {
       this.#homeTeam.stats!.pointsPerQuarter.push(0);
       this.#awayTeam.stats!.pointsPerQuarter.push(0);
 
+      console.log(`Quarter: ${this.#quarter}`);
+
       while (gameClock > 0) {
-        const timeOfPossession = getRandomNumberBetween(10, 25); // 10 to 24 seconds
+        const timeOfPossession = getRandomNumberBetween(4, 24); // 10 to 24 seconds
         gameClock -= timeOfPossession;
 
         this.#homeTeam.increaseMinutes(timeOfPossession);
         this.#awayTeam.increaseMinutes(timeOfPossession);
+
+        console.log(
+          `${this.#homeTeam.city}: ${this.#homeTeam.stats!.points} - ${this.#awayTeam.city}: ${this.#awayTeam.stats!.points}`
+        );
+        console.log(`The ${this.#offense.name} have the ball for ${timeOfPossession} seconds`);
+        console.log(`Time left in the quarter: ${gameClock} seconds`);
 
         this.#simPossession();
 
@@ -89,90 +97,153 @@ export class Game {
     // Get defenses total rebound
     const totalDefenseRebounds = this.#getTeamTotalAttributeValue("rebounding", this.#defense);
 
+    const totalRebounds = totalOffenseRebounds + totalDefenseRebounds;
+
     // Get a random number between 0 and the total rebounds
-    const randomNumber = getRandomNumber(totalOffenseRebounds + totalDefenseRebounds);
+    let randomNumber = getRandomNumber(totalRebounds);
+
+    console.log(
+      `Offense Rebound Total: ${totalOffenseRebounds}, Defense Rebound Total: ${totalDefenseRebounds}`
+    );
+    console.log(`Random Number: ${randomNumber}`);
 
     // Determine if the offense or defense gets the rebound
     let player: PlayerGame;
-    if (randomNumber <= totalOffenseRebounds) {
+    if (randomNumber <= totalDefenseRebounds) {
+      console.log("Defense gets the rebound");
+      // Defense gets the rebound
+      player = this.#choosePlayer(this.#defense, totalDefenseRebounds, "rebounding");
+
+      this.#defense.stats!.rebounds += 1;
+      this.#changePossession(); // Change possession to the defense
+    } else {
+      console.log("Offense gets the rebound");
       // Offense gets the rebound
       player = this.#choosePlayer(this.#offense, totalOffenseRebounds, "rebounding");
 
       this.#offense.stats!.rebounds += 1;
-    } else {
-      // Defense gets the rebound
-      player = this.#choosePlayer(this.#defense, totalDefenseRebounds, "rebounding");
-      this.#defense.stats!.rebounds += 1;
-
-      this.#changePossession(); // Change possession to the defense
     }
 
     player.stats!.rebounds += 1;
+    console.log(
+      `Player: ${player.lastName}, Rebounding: ${player.attributes.rebounding} gets the rebound and now has ${player.stats!.rebounds} rebounds`
+    );
   }
 
   #simPossession(): void {
     // Get a random player from the offense
     const totalOffenseUsageRate = this.#getTeamTotalAttributeValue("usageRate", this.#offense);
     const player = this.#choosePlayer(this.#offense, totalOffenseUsageRate, "usageRate");
+    console.log(`Player: ${player.lastName} has the ball`);
 
     // Determine if the player will shoot a 2-point or 3-point shot
-    const shootThree = getRandomNumber(1000) <= player.attributes.threeTendency;
+    //const shootThree = getRandomNumber(1000) <= player.attributes.threeTendency;
 
     let shotSuccess = false;
     let isFouled = false;
     let numberOfFreeThrows = 0;
+    let shotModifier = 1;
 
-    if (shootThree) {
-      player.stats!.threePointAttempts += 1;
-      this.#offense.stats!.threePointAttempts += 1;
+    player.stats!.fieldGoalAttempts += 1;
+    this.#offense.stats!.fieldGoalAttempts += 1;
+
+    // Check if the player will shoot a 3-point shot based on their tendency
+    if (getRandomNumber(1000) <= player.attributes.threeTendency) {
+      console.log(`${player.lastName} for 3!`);
+
+      // Check if the player is fouled on the 3-point shot
       isFouled = this.#isFouled(FREE_THROW_RATE_FOR_THREE);
       if (isFouled) {
-        numberOfFreeThrows = 3;
+        shotModifier = 0.5; // Player will have shooting percentage reduced by 50% if fouled to simulate a tougher shot
       }
-      shotSuccess = getRandomNumber(1000) <= player.attributes.threePointShooting;
+
+      player.stats!.threePointAttempts += 1;
+      this.#offense.stats!.threePointAttempts += 1;
+
+      shotSuccess = getRandomNumber(1000) <= player.attributes.threePointShooting * shotModifier;
+
+      if (shotSuccess) {
+        player.stats!.fieldGoalsMade += 1;
+        player.stats!.points += 3;
+        player.stats!.threePointMade += 1;
+        this.#offense.stats!.fieldGoalsMade += 1;
+        this.#offense.stats!.points += 3;
+        this.#offense.stats!.threePointMade += 1;
+        this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 3; // Update points per quarter
+
+        console.log(
+          `${player.lastName} makes the 3-point shot! He is ${player.stats!.threePointMade} for ${player.stats!.threePointAttempts} from 3 and has ${player.stats!.points} points`
+        );
+
+        if (isFouled) {
+          console.log(`And 1!`);
+          numberOfFreeThrows = 1; // And 1
+        } else {
+          this.#changePossession(); // Change possession to the defense
+        }
+      } else {
+        // The player missed the 3 point shot
+        console.log(`${player.lastName} misses the 3-point shot`);
+
+        if (isFouled) {
+          console.log(`But they were fouled!`);
+          numberOfFreeThrows = 3;
+          player.stats!.threePointAttempts -= 1; // Remove the missed 3-point attempt from the stats
+          player.stats!.fieldGoalAttempts -= 1; // Remove the missed field goal attempt from the stats
+          this.#offense.stats!.threePointAttempts -= 1; // Remove the missed 3-point attempt from the stats
+          this.#offense.stats!.fieldGoalAttempts -= 1; // Remove the missed field goal attempt from the stats
+        } else {
+          this.#simRebound(); // Simulate a rebound
+        }
+      }
     } else {
+      // The player will shoot a 2-point shot
+      console.log(`${player.lastName} takes the shot!`);
+
+      // Check if the player is fouled on the 2-point shot
       isFouled = this.#isFouled(FREE_THROW_RATE_FOR_TWO);
 
       if (isFouled) {
-        numberOfFreeThrows = 2;
+        shotModifier = 0.5; // Player will have shooting percentage reduced by 50% if fouled to simulate a tougher shot
       }
 
-      shotSuccess = getRandomNumber(1000) <= player.attributes.twoPointShooting;
-    }
+      shotSuccess = getRandomNumber(1000) <= player.attributes.twoPointShooting * shotModifier;
 
-    // Update the player's stats
-    player.stats!.fieldGoalAttempts += 1;
-    // Update the team's stats
-    this.#offense.stats!.fieldGoalAttempts += 1;
-    if (shotSuccess) {
-      player.stats!.fieldGoalsMade += 1;
-      this.#offense.stats!.fieldGoalsMade += 1;
-
-      if (shootThree) {
-        player.stats!.threePointMade += 1;
-        this.#offense.stats!.threePointMade += 1;
-        player.stats!.points += 3;
-        this.#offense.stats!.points += 3; // Assuming a 3-point shot
-        this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 3; // Update points per quarter
-      } else {
+      if (shotSuccess) {
+        player.stats!.fieldGoalsMade += 1;
         player.stats!.points += 2;
+        this.#offense.stats!.fieldGoalsMade += 1;
         this.#offense.stats!.points += 2;
         this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 2; // Update points per quarter
-      }
 
-      if (isFouled) {
-        this.#simFreeThrows(player, 1); // And 1
+        console.log(
+          `${player.lastName} makes the 2-point shot! He is ${player.stats!.fieldGoalsMade} for ${player.stats!.fieldGoalAttempts} and has ${player.stats!.points} points`
+        );
+
+        if (isFouled) {
+          console.log(`And 1!`);
+          numberOfFreeThrows = 1; // And 1
+        } else {
+          this.#changePossession(); // Change possession to the defense
+        }
       } else {
-        this.#changePossession();
+        // The player missed the 2 point shot
+        console.log(`${player.lastName} misses the 2-point shot`);
+
+        if (isFouled) {
+          console.log(`But they were fouled!`);
+          numberOfFreeThrows = 2;
+
+          player.stats!.fieldGoalAttempts -= 1; // Remove the missed field goal attempt from the stats
+          this.#offense.stats!.fieldGoalAttempts -= 1; // Remove the missed field goal attempt from the stats
+        } else {
+          this.#simRebound(); // Simulate a rebound
+        }
       }
-    } else if (isFouled) {
-      this.#simFreeThrows(player, numberOfFreeThrows); // If the shot was missed and the player was fouled, shoot free throws
-      // Take away the field goal attempt from the player and team stats
-      player.stats!.fieldGoalAttempts -= 1;
-      this.#offense.stats!.fieldGoalAttempts -= 1;
-    } else {
-      // If the shot was missed and the player was not fouled, simulate a rebound
-      this.#simRebound();
+    }
+
+    if (numberOfFreeThrows > 0) {
+      this.#simFreeThrows(player, numberOfFreeThrows); // Simulate free throws
     }
   }
 
@@ -194,16 +265,28 @@ export class Game {
 
       player.stats!.freeThrowAttempts += 1;
       this.#offense.stats!.freeThrowAttempts += 1;
+      console.log(`${player.lastName} shoots his ${i + 1} free throw`);
 
       if (freeThrowSuccess) {
+        console.log(`${player.lastName} makes the free throw`);
         player.stats!.freeThrowsMade += 1;
         this.#offense.stats!.freeThrowsMade += 1;
         player.stats!.points += 1;
         this.#offense.stats!.points += 1;
         this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 1;
-      } else if (i + 1 === numberOfFreeThrows) {
-        // If the last free throw was missed, simulate a rebound
-        this.#simRebound();
+      } else {
+        console.log(`${player.lastName} misses the free throw`);
+      }
+
+      if (i + 1 === numberOfFreeThrows) {
+        // If the last free throw was made, change possession
+        if (freeThrowSuccess) {
+          this.#changePossession();
+        } else {
+          // If the last free throw was missed, simulate a rebound
+          console.log(`${player.lastName} misses the free throw! Rebound!`);
+          this.#simRebound();
+        }
       }
     }
   }
