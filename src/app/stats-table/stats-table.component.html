@@ -38,6 +38,14 @@
           </td>
 
           <td class="px-2 py-1">
+            {{ player.stats!.offensiveRebounds }}
+          </td>
+
+          <td class="px-2 py-1">
+            {{ player.stats!.defensiveRebounds }}
+          </td>
+
+          <td class="px-2 py-1">
             {{ player.stats!.rebounds }}
           </td>
 
@@ -64,6 +72,14 @@
 
         <td class="px-2 py-1">
           {{ team().stats.freeThrowsMade }}/{{ team().stats!.freeThrowAttempts }}
+        </td>
+
+        <td class="px-2 py-1">
+          {{ team().stats.offensiveRebounds }}
+        </td>
+
+        <td class="px-2 py-1">
+          {{ team().stats.defensiveRebounds }}
         </td>
 
         <td class="px-2 py-1">

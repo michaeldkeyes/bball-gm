@@ -90,12 +90,17 @@ export class Game {
   }
 
   #simRebound(): void {
-    // Get offenses total rebound and reduce it by 70%
-    const totalOffenseRebounds =
-      this.#getTeamTotalAttributeValue("rebounding", this.#offense) * 0.3;
+    // Get offenses total rebound ability
+    const totalOffenseRebounds = this.#getTeamTotalAttributeValue(
+      "offensiveRebounding",
+      this.#offense
+    );
 
-    // Get defenses total rebound
-    const totalDefenseRebounds = this.#getTeamTotalAttributeValue("rebounding", this.#defense);
+    // Get defenses total rebound ability
+    const totalDefenseRebounds = this.#getTeamTotalAttributeValue(
+      "defensiveRebounding",
+      this.#defense
+    );
 
     const totalRebounds = totalOffenseRebounds + totalDefenseRebounds;
 
@@ -105,28 +110,29 @@ export class Game {
     console.log(
       `Offense Rebound Total: ${totalOffenseRebounds}, Defense Rebound Total: ${totalDefenseRebounds}`
     );
-    console.log(`Random Number: ${randomNumber}`);
+    console.log(`Random Number: ${randomNumber} of ${totalRebounds}`);
 
     // Determine if the offense or defense gets the rebound
     let player: PlayerGame;
     if (randomNumber <= totalDefenseRebounds) {
       console.log("Defense gets the rebound");
       // Defense gets the rebound
-      player = this.#choosePlayer(this.#defense, totalDefenseRebounds, "rebounding");
+      player = this.#choosePlayer(this.#defense, totalDefenseRebounds, "defensiveRebounding");
 
-      this.#defense.stats!.rebounds += 1;
+      player.stats!.defensiveRebounds += 1;
+      this.#defense.stats!.defensiveRebounds += 1;
       this.#changePossession(); // Change possession to the defense
     } else {
       console.log("Offense gets the rebound");
       // Offense gets the rebound
-      player = this.#choosePlayer(this.#offense, totalOffenseRebounds, "rebounding");
+      player = this.#choosePlayer(this.#offense, totalOffenseRebounds, "offensiveRebounding");
 
-      this.#offense.stats!.rebounds += 1;
+      player.stats!.offensiveRebounds += 1;
+      this.#offense.stats!.offensiveRebounds += 1;
     }
 
-    player.stats!.rebounds += 1;
     console.log(
-      `Player: ${player.lastName}, Rebounding: ${player.attributes.rebounding} gets the rebound and now has ${player.stats!.rebounds} rebounds`
+      `Player: ${player.lastName} gets the rebound and now has ${player.stats!.rebounds} rebounds`
     );
   }
 
