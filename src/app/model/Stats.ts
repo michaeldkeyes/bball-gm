@@ -4,6 +4,7 @@
  * The stats are initialized to zero and can be updated during the game simulation.
  */
 export class Stats {
+  _assists: number;
   _defensiveRebounds: number;
   _fieldGoalAttempts: number;
   _fieldGoalsMade: number;
@@ -16,6 +17,7 @@ export class Stats {
   _threePointMade: number;
 
   constructor() {
+    this._assists = 0;
     this._defensiveRebounds = 0;
     this._fieldGoalAttempts = 0;
     this._fieldGoalsMade = 0;
@@ -26,6 +28,14 @@ export class Stats {
     this._pointsPerQuarter = [];
     this._threePointAttempts = 0;
     this._threePointMade = 0;
+  }
+
+  get assists(): number {
+    return this._assists;
+  }
+
+  set assists(value: number) {
+    this._assists = value;
   }
 
   get defensiveRebounds(): number {

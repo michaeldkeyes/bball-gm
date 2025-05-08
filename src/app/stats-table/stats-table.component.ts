@@ -11,5 +11,18 @@ import { TeamGame } from "../model/TeamGame";
 export class StatsTableComponent {
   readonly team = input.required<TeamGame>();
 
-  headers = ["Player", "Position", "MP", "FG", "FG%", "3P", "FT", "ORB", "DRB", "TRB", "PTS"];
+  headers = [
+    "Player",
+    "Position",
+    "MP",
+    "FG",
+    "FG%",
+    "3P",
+    "FT",
+    "ORB",
+    "DRB",
+    "TRB",
+    "AST",
+    "PTS",
+  ];
 }
