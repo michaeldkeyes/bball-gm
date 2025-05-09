@@ -49,7 +49,11 @@
             {{ player.stats!.rebounds }}
           </td>
 
-          <td class="px-2 py-1">{{ player.stats?.points }}</td>
+          <td class="px-2 py-1">
+            {{ player.stats!.assists }}
+          </td>
+
+          <td class="px-2 py-1">{{ player.stats!.points }}</td>
         </tr>
       }
     </tbody>
@@ -84,6 +88,10 @@
 
         <td class="px-2 py-1">
           {{ team().stats.rebounds }}
+        </td>
+
+        <td class="px-2 py-1">
+          {{ team().stats.assists }}
         </td>
 
         <td class="px-2 py-1">

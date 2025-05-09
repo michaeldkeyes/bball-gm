@@ -18,6 +18,7 @@ export interface Attributes {
   defensiveRebounding: number;
   freeThrowShooting: number;
   offensiveRebounding: number;
+  passing: number;
   twoPointShooting: number;
   threePointShooting: number;
   threeTendency: number;
