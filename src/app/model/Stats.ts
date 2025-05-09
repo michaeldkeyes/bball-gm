@@ -13,8 +13,10 @@ export class Stats {
   _offensiveRebounds: number;
   _points: number;
   _pointsPerQuarter: number[];
+  _steals: number;
   _threePointAttempts: number;
   _threePointMade: number;
+  _turnovers: number;
 
   constructor() {
     this._assists = 0;
@@ -26,14 +28,15 @@ export class Stats {
     this._offensiveRebounds = 0;
     this._points = 0;
     this._pointsPerQuarter = [];
+    this._steals = 0;
     this._threePointAttempts = 0;
     this._threePointMade = 0;
+    this._turnovers = 0;
   }
 
   get assists(): number {
     return this._assists;
   }
-
   set assists(value: number) {
     this._assists = value;
   }
@@ -41,7 +44,6 @@ export class Stats {
   get defensiveRebounds(): number {
     return this._defensiveRebounds;
   }
-
   set defensiveRebounds(value: number) {
     this._defensiveRebounds = value;
   }
@@ -49,7 +51,6 @@ export class Stats {
   get points(): number {
     return this._points;
   }
-
   set points(value: number) {
     this._points = value;
   }
@@ -57,7 +58,6 @@ export class Stats {
   get fieldGoalAttempts(): number {
     return this._fieldGoalAttempts;
   }
-
   set fieldGoalAttempts(value: number) {
     this._fieldGoalAttempts = value;
   }
@@ -65,7 +65,6 @@ export class Stats {
   get freeThrowAttempts(): number {
     return this._freeThrowAttempts;
   }
-
   set freeThrowAttempts(value: number) {
     this._freeThrowAttempts = value;
   }
@@ -73,7 +72,6 @@ export class Stats {
   get freeThrowsMade(): number {
     return this._freeThrowsMade;
   }
-
   set freeThrowsMade(value: number) {
     this._freeThrowsMade = value;
   }
@@ -81,7 +79,6 @@ export class Stats {
   get fieldGoalsMade(): number {
     return this._fieldGoalsMade;
   }
-
   set fieldGoalsMade(value: number) {
     this._fieldGoalsMade = value;
   }
@@ -89,7 +86,6 @@ export class Stats {
   get offensiveRebounds(): number {
     return this._offensiveRebounds;
   }
-
   set offensiveRebounds(value: number) {
     this._offensiveRebounds = value;
   }
@@ -100,6 +96,13 @@ export class Stats {
 
   get rebounds(): number {
     return this._offensiveRebounds + this._defensiveRebounds;
+  }
+
+  get steals(): number {
+    return this._steals;
+  }
+  set steals(value: number) {
+    this._steals = value;
   }
 
   get threePointAttempts(): number {
@@ -114,5 +117,12 @@ export class Stats {
   }
   set threePointMade(value: number) {
     this._threePointMade = value;
+  }
+
+  get turnovers(): number {
+    return this._turnovers;
+  }
+  set turnovers(value: number) {
+    this._turnovers = value;
   }
 }

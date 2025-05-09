@@ -53,6 +53,14 @@
             {{ player.stats!.assists }}
           </td>
 
+          <td class="px-2 py-1">
+            {{ player.stats!.steals }}
+          </td>
+
+          <td class="px-2 py-1">
+            {{ player.stats!.turnovers }}
+          </td>
+
           <td class="px-2 py-1">{{ player.stats!.points }}</td>
         </tr>
       }
@@ -92,6 +100,14 @@
 
         <td class="px-2 py-1">
           {{ team().stats.assists }}
+        </td>
+
+        <td class="px-2 py-1">
+          {{ team().stats.steals }}
+        </td>
+
+        <td class="px-2 py-1">
+          {{ team().stats.turnovers }}
         </td>
 
         <td class="px-2 py-1">

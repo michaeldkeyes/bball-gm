@@ -15,10 +15,12 @@ export interface Player {
 }
 
 export interface Attributes {
+  ballHandling: number;
   defensiveRebounding: number;
   freeThrowShooting: number;
   offensiveRebounding: number;
   passing: number;
+  stealing: number;
   twoPointShooting: number;
   threePointShooting: number;
   threeTendency: number;
