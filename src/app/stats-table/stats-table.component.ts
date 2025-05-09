@@ -23,6 +23,8 @@ export class StatsTableComponent {
     "DRB",
     "TRB",
     "AST",
+    "STL",
+    "TOV",
     "PTS",
   ];
 }

@@ -152,6 +152,29 @@ export class Game {
     return null;
   }
 
+  #checkForSteal(): boolean {
+    const randomNumber = getRandomNumber(1000);
+
+    let min = 0;
+    let max = 0;
+
+    // Loop through the players on the court to see if they get a steal
+    for (const player of this.#defense.playersOnCourt) {
+      min = max;
+      max = min + player.attributes.stealing;
+
+      if (randomNumber <= max) {
+        console.log(`${player.lastName} steals the ball!`);
+        player.stats!.steals += 1;
+        this.#defense.stats!.steals += 1;
+
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   #simPossession(): void {
     // Get a random player from the offense
     const totalOffenseUsageRate = this.#getTeamTotalAttributeValue("usageRate", this.#offense);
@@ -166,6 +189,30 @@ export class Game {
     let numberOfFreeThrows = 0;
     let shotModifier = 1;
 
+    // Check if there is a steal
+    const steal = this.#checkForSteal();
+    if (steal) {
+      playerToShoot.stats!.turnovers += 1;
+      this.#offense.stats!.turnovers += 1;
+      this.#changePossession(); // Change possession to the defense
+      return; // End the possession
+    }
+
+    // Check if the player will turn the ball over
+    const turnoverChance = getRandomNumber(1000);
+    if (
+      turnoverChance <=
+      playerToShoot.attributes.ballHandling -
+        this.#getTeamTotalAttributeValue("stealing", this.#defense) // Remove the defenses stealing ability from the equation, or else turnovers will be too high
+    ) {
+      console.log(`${playerToShoot.lastName} turns the ball over!`);
+      playerToShoot.stats!.turnovers += 1;
+      this.#offense.stats!.turnovers += 1;
+      this.#changePossession(); // Change possession to the defense
+      return; // End the possession
+    }
+
+    // Check if the player will be assisted
     const playerToAssist = this.#checkForAssist(playerToShoot);
 
     if (playerToAssist) {
