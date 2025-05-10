@@ -5,6 +5,7 @@
  */
 export class Stats {
   _assists: number;
+  _blocks: number;
   _defensiveRebounds: number;
   _fieldGoalAttempts: number;
   _fieldGoalsMade: number;
@@ -20,6 +21,7 @@ export class Stats {
 
   constructor() {
     this._assists = 0;
+    this._blocks = 0;
     this._defensiveRebounds = 0;
     this._fieldGoalAttempts = 0;
     this._fieldGoalsMade = 0;
@@ -39,6 +41,13 @@ export class Stats {
   }
   set assists(value: number) {
     this._assists = value;
+  }
+
+  get blocks(): number {
+    return this._blocks;
+  }
+  set blocks(value: number) {
+    this._blocks = value;
   }
 
   get defensiveRebounds(): number {

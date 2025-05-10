@@ -212,15 +212,30 @@ export class Game {
       return; // End the possession
     }
 
+    playerToShoot.stats!.fieldGoalAttempts += 1;
+    this.#offense.stats!.fieldGoalAttempts += 1;
+
+    // Check if the shot is blocked
+    const blockChance = getRandomNumber(1000);
+    const totalBlockAbility = this.#getTeamTotalAttributeValue("blocking", this.#defense);
+    if (blockChance <= totalBlockAbility) {
+      const playerWhoBlocked = this.#choosePlayer(this.#defense, totalBlockAbility, "blocking");
+      console.log(
+        `${playerWhoBlocked.lastName} blocks the shot! He now has ${playerWhoBlocked.stats!.blocks} blocks`
+      );
+      playerWhoBlocked.stats!.blocks += 1;
+      this.#defense.stats!.blocks += 1;
+
+      this.#simRebound();
+      return;
+    }
+
     // Check if the player will be assisted
     const playerToAssist = this.#checkForAssist(playerToShoot);
 
     if (playerToAssist) {
       shotModifier += 0.05; // Player will have shooting percentage increased by 5% if assisted to simulate an easier shot
     }
-
-    playerToShoot.stats!.fieldGoalAttempts += 1;
-    this.#offense.stats!.fieldGoalAttempts += 1;
 
     // Check if the player will shoot a 3-point shot based on their tendency
     if (getRandomNumber(1000) <= playerToShoot.attributes.threeTendency) {
