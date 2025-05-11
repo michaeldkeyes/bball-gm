@@ -1,14 +1,15 @@
 import { Component, OnInit, signal } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { TeamService } from "./service/team.service";
-import { StatsTableComponent } from "./stats-table/stats-table.component";
-import { Game } from "../simulation/Game";
+import { StatsTableComponent } from "./components/stats-table/stats-table.component";
+import { Game } from "./simulation/Game";
 import { Team } from "./model/Team";
-import { TeamPpqtableComponent } from "./team-ppqtable/team-ppqtable.component";
+import { TeamPpqtableComponent } from "./components/team-ppqtable/team-ppqtable.component";
+import { FourFactorsComponent } from "./components/four-factors/four-factors.component";
 
 @Component({
   selector: "app-root",
-  imports: [RouterOutlet, StatsTableComponent, TeamPpqtableComponent],
+  imports: [RouterOutlet, FourFactorsComponent, StatsTableComponent, TeamPpqtableComponent],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",
 })
@@ -24,25 +25,13 @@ export class AppComponent implements OnInit {
       .getTeam(1)
       .subscribe(
         (team) =>
-          (this.homeTeam = new Team(
-            team.id,
-            team.abbreviation,
-            team.name,
-            team.city,
-            team.players
-          ))
+          (this.homeTeam = new Team(team.id, team.abbreviation, team.name, team.city, team.players))
       );
     this.teamService
       .getTeam(2)
       .subscribe(
         (team) =>
-          (this.awayTeam = new Team(
-            team.id,
-            team.abbreviation,
-            team.name,
-            team.city,
-            team.players
-          ))
+          (this.awayTeam = new Team(team.id, team.abbreviation, team.name, team.city, team.players))
       );
   }
 

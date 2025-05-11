@@ -12,15 +12,18 @@
 
   <div class="mb-3">
     @if (gameResult()) {
-      <div class="flex justify-center">
+      <div class="mb-2 flex justify-center">
         <h2>{{ gameResult()!.homeTeam.fullName() }} &nbsp;</h2>
         <h2>{{ gameResult()!.homeTeam.stats!.points }} &nbsp;</h2>
-        <span> - &nbsp; </span>
+        <span class="text-lg"> - &nbsp; </span>
         <h2>{{ gameResult()!.awayTeam.fullName() }} &nbsp;</h2>
         <h2>{{ gameResult()!.awayTeam.stats!.points }} &nbsp;</h2>
       </div>
 
-      <app-team-ppqtable [game]="gameResult()" />
+      <div class="flex justify-center">
+        <app-team-ppqtable [game]="gameResult()" />
+        <app-four-factors [teams]="gameResult()!.getTeams()" />
+      </div>
 
       <app-stats-table [team]="gameResult()!.homeTeam" />
       <app-stats-table [team]="gameResult()!.awayTeam" />
