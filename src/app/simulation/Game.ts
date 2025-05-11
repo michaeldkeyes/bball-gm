@@ -1,10 +1,10 @@
-import { Attributes, Player, PlayerGame } from "../app/model/player.interface";
-import { Team } from "../app/model/Team";
-import { TeamGame } from "../app/model/TeamGame";
+import { Attributes, Player, PlayerGame } from "../model/player.interface";
+import { Team } from "../model/Team";
+import { TeamGame } from "../model/TeamGame";
 import { getRandomNumber, getRandomNumberBetween } from "./utils/random";
 
-const FREE_THROW_RATE_FOR_TWO = 250; // 25% chance of getting fouled on a two point shot
-const FREE_THROW_RATE_FOR_THREE = 25; // 2.5% chance of getting fouled on a three point shot
+const FREE_THROW_RATE_FOR_TWO = 150; // 15% chance of getting fouled on a two point shot
+const FREE_THROW_RATE_FOR_THREE = 15; // 1.5% chance of getting fouled on a three point shot
 
 export class Game {
   #homeTeam: TeamGame;

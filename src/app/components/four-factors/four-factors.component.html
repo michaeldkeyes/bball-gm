@@ -1,0 +1,38 @@
+<div class="ml-5">
+  <table class="m-auto mb-5 border-y border-solid border-black text-center">
+    <thead>
+      <tr class="border-y border-solid border-black">
+        @for (header of headers; track $index) {
+          <th class="px-1">
+            {{ header }}
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      <!--Some of these had multiple formulas, especially the turnover %. I picked the one that seemed to be most common-->
+      @for (team of teams(); track $index) {
+        <tr class="border-y border-solid border-black">
+          <td>
+            {{
+              (team.stats.fieldGoalsMade + 0.5 * team.stats.threePointMade) /
+                team.stats.fieldGoalAttempts | percent: "1.1-1"
+            }}
+          </td>
+          <td>
+            {{
+              team.stats.turnovers /
+                (team.stats.fieldGoalAttempts +
+                  0.44 * team.stats.freeThrowAttempts +
+                  team.stats.turnovers) | percent: "1.1-1"
+            }}
+          </td>
+          <td>TODO</td>
+          <td>
+            {{ team.stats.freeThrowsMade / team.stats.fieldGoalAttempts | percent: "1.1-1" }}
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

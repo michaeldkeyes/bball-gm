@@ -1,6 +1,6 @@
 import { Component, input } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { TeamGame } from "../model/TeamGame";
+import { TeamGame } from "../../model/TeamGame";
 
 @Component({
   selector: "app-stats-table",
