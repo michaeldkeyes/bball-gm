@@ -2,6 +2,7 @@ import { PlayerGame } from "./player.interface";
 import { PlayerStats } from "./PlayerStats";
 import { Stats } from "./Stats";
 import { Team } from "./Team";
+import { TeamStats } from "./TeamStats";
 
 /**
  * TeamGame class represents a basketball team in a game context.
@@ -28,7 +29,7 @@ export class TeamGame extends Team {
     this.#playersOnCourt = this.#players.slice(0, 5); // First 5 players on court
     this.#playersOnBench = this.#players.slice(5); // Remaining players on bench
 
-    this._stats = new Stats();
+    this._stats = new TeamStats();
   }
 
   /**

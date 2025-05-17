@@ -1,5 +1,5 @@
 import { Player } from "./player.interface";
-import { Stats } from "./Stats";
+import { TeamStats } from "./TeamStats";
 
 /**
  * Team class represents a basketball team with its players and stats.
@@ -11,7 +11,7 @@ export class Team {
   _name: string;
   _city: string;
   _players: Player[];
-  _stats: Stats;
+  _stats: TeamStats;
 
   constructor(
     id: number,
@@ -19,7 +19,7 @@ export class Team {
     name: string,
     city: string,
     players: Player[],
-    stats: Stats = new Stats()
+    stats: TeamStats = new TeamStats()
   ) {
     this._id = id;
     this._abbreviation = abbreviation;
@@ -53,11 +53,11 @@ export class Team {
     return this._players;
   }
 
-  get stats(): Stats {
+  get stats(): TeamStats {
     return this._stats;
   }
 
-  set stats(value: Stats) {
+  set stats(value: TeamStats) {
     this._stats = value;
   }
 }
