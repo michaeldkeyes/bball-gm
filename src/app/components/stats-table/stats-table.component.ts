@@ -28,5 +28,6 @@ export class StatsTableComponent {
     "TOV",
     "PTS",
     "+/-",
+    "GmSc",
   ];
 }
