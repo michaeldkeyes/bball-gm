@@ -114,7 +114,8 @@ export class Game {
       player = this.#choosePlayer(this.#defense, totalDefenseRebounds, "defensiveRebounding");
 
       player.stats!.defensiveRebounds += 1;
-      this.#defense.stats!.defensiveRebounds += 1;
+      this.#defense.stats.defensiveRebounds += 1;
+      this.#offense.stats.oppDefensiveRebounds += 1;
       this.#changePossession(); // Change possession to the defense
     } else {
       // Offense gets the rebound
@@ -122,6 +123,7 @@ export class Game {
 
       player.stats!.offensiveRebounds += 1;
       this.#offense.stats!.offensiveRebounds += 1;
+      this.#defense.stats.oppOffensiveRebounds += 1;
     }
 
     console.log(
@@ -166,7 +168,8 @@ export class Game {
       if (randomNumber <= max) {
         console.log(`${player.lastName} steals the ball!`);
         player.stats!.steals += 1;
-        this.#defense.stats!.steals += 1;
+        this.#defense.stats.steals += 1;
+        this.#offense.stats.oppSteals += 1;
 
         return true;
       }
@@ -193,7 +196,8 @@ export class Game {
     const steal = this.#checkForSteal();
     if (steal) {
       playerToShoot.stats!.turnovers += 1;
-      this.#offense.stats!.turnovers += 1;
+      this.#offense.stats.turnovers += 1;
+      this.#defense.stats.oppTurnovers += 1;
       this.#changePossession(); // Change possession to the defense
       return; // End the possession
     }
@@ -207,13 +211,14 @@ export class Game {
     ) {
       console.log(`${playerToShoot.lastName} turns the ball over!`);
       playerToShoot.stats!.turnovers += 1;
-      this.#offense.stats!.turnovers += 1;
+      this.#offense.stats.turnovers += 1;
       this.#changePossession(); // Change possession to the defense
       return; // End the possession
     }
 
     playerToShoot.stats!.fieldGoalAttempts += 1;
-    this.#offense.stats!.fieldGoalAttempts += 1;
+    this.#offense.stats.fieldGoalAttempts += 1;
+    this.#defense.stats.oppFieldGoalAttempts += 1;
 
     // Check if the shot is blocked
     const blockChance = getRandomNumber(1000);
@@ -224,7 +229,8 @@ export class Game {
         `${playerWhoBlocked.lastName} blocks the shot! He now has ${playerWhoBlocked.stats!.blocks} blocks`
       );
       playerWhoBlocked.stats!.blocks += 1;
-      this.#defense.stats!.blocks += 1;
+      this.#defense.stats.blocks += 1;
+      this.#offense.stats.oppBlocks += 1;
 
       this.#simRebound();
       return;
@@ -248,7 +254,8 @@ export class Game {
       }
 
       playerToShoot.stats!.threePointAttempts += 1;
-      this.#offense.stats!.threePointAttempts += 1;
+      this.#offense.stats.threePointAttempts += 1;
+      this.#defense.stats.oppThreePointAttempts += 1;
 
       shotSuccess =
         getRandomNumber(1000) <= playerToShoot.attributes.threePointShooting * shotModifier;
@@ -257,10 +264,13 @@ export class Game {
         playerToShoot.stats!.fieldGoalsMade += 1;
         playerToShoot.stats!.points += 3;
         playerToShoot.stats!.threePointMade += 1;
-        this.#offense.stats!.fieldGoalsMade += 1;
-        this.#offense.stats!.points += 3;
-        this.#offense.stats!.threePointMade += 1;
-        this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 3; // Update points per quarter
+        this.#offense.stats.fieldGoalsMade += 1;
+        this.#offense.stats.points += 3;
+        this.#offense.stats.threePointMade += 1;
+        this.#offense.stats.pointsPerQuarter[this.#quarter - 1] += 3;
+        this.#defense.stats.oppFieldGoalsMade += 1;
+        this.#defense.stats.oppPoints += 3;
+        this.#defense.stats.oppThreePointMade += 1;
 
         console.log(
           `${playerToShoot.lastName} makes the 3-point shot! He is ${playerToShoot.stats!.threePointMade} for ${playerToShoot.stats!.threePointAttempts} from 3 and has ${playerToShoot.stats!.points} points`
@@ -269,7 +279,8 @@ export class Game {
         if (playerToAssist) {
           console.log(`${playerToAssist.lastName} with the assist!`);
           playerToAssist.stats!.assists += 1;
-          this.#offense.stats!.assists += 1;
+          this.#offense.stats.assists += 1;
+          this.#defense.stats.oppAssists += 1;
         }
 
         if (isFouled) {
@@ -287,8 +298,8 @@ export class Game {
           numberOfFreeThrows = 3;
           playerToShoot.stats!.threePointAttempts -= 1; // Remove the missed 3-point attempt from the stats
           playerToShoot.stats!.fieldGoalAttempts -= 1; // Remove the missed field goal attempt from the stats
-          this.#offense.stats!.threePointAttempts -= 1; // Remove the missed 3-point attempt from the stats
-          this.#offense.stats!.fieldGoalAttempts -= 1; // Remove the missed field goal attempt from the stats
+          this.#offense.stats.threePointAttempts -= 1; // Remove the missed 3-point attempt from the stats
+          this.#offense.stats.fieldGoalAttempts -= 1; // Remove the missed field goal attempt from the stats
         } else {
           this.#simRebound(); // Simulate a rebound
         }
@@ -310,9 +321,11 @@ export class Game {
       if (shotSuccess) {
         playerToShoot.stats!.fieldGoalsMade += 1;
         playerToShoot.stats!.points += 2;
-        this.#offense.stats!.fieldGoalsMade += 1;
-        this.#offense.stats!.points += 2;
-        this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 2; // Update points per quarter
+        this.#offense.stats.fieldGoalsMade += 1;
+        this.#offense.stats.points += 2;
+        this.#offense.stats.pointsPerQuarter[this.#quarter - 1] += 2; // Update points per quarter
+        this.#defense.stats.oppFieldGoalsMade += 1;
+        this.#defense.stats.oppPoints += 2;
 
         console.log(
           `${playerToShoot.lastName} makes the 2-point shot! He is ${playerToShoot.stats!.fieldGoalsMade} for ${playerToShoot.stats!.fieldGoalAttempts} and has ${playerToShoot.stats!.points} points`
@@ -321,7 +334,8 @@ export class Game {
         if (playerToAssist) {
           console.log(`${playerToAssist.lastName} with the assist!`);
           playerToAssist.stats!.assists += 1;
-          this.#offense.stats!.assists += 1;
+          this.#offense.stats.assists += 1;
+          this.#defense.stats.oppAssists += 1;
         }
 
         if (isFouled) {
@@ -339,15 +353,16 @@ export class Game {
           numberOfFreeThrows = 2;
 
           playerToShoot.stats!.fieldGoalAttempts -= 1; // Remove the missed field goal attempt from the stats
-          this.#offense.stats!.fieldGoalAttempts -= 1; // Remove the missed field goal attempt from the stats
+          this.#offense.stats!.fieldGoalAttempts -= 1;
+          this.#defense.stats.oppFieldGoalAttempts -= 1;
         } else {
-          this.#simRebound(); // Simulate a rebound
+          this.#simRebound();
         }
       }
     }
 
     if (numberOfFreeThrows > 0) {
-      this.#simFreeThrows(playerToShoot, numberOfFreeThrows); // Simulate free throws
+      this.#simFreeThrows(playerToShoot, numberOfFreeThrows);
     }
   }
 
@@ -369,6 +384,7 @@ export class Game {
 
       player.stats!.freeThrowAttempts += 1;
       this.#offense.stats!.freeThrowAttempts += 1;
+      this.#defense.stats!.oppFreeThrowAttempts += 1;
       console.log(`${player.lastName} shoots his ${i + 1} free throw`);
 
       if (freeThrowSuccess) {
@@ -378,6 +394,8 @@ export class Game {
         player.stats!.points += 1;
         this.#offense.stats!.points += 1;
         this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 1;
+        this.#defense.stats.oppFreeThrowsMade += 1;
+        this.#defense.stats.oppPoints += 1;
       } else {
         console.log(`${player.lastName} misses the free throw`);
       }

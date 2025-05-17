@@ -27,7 +27,12 @@
                   team.stats.turnovers) | percent: "1.1-1"
             }}
           </td>
-          <td>TODO</td>
+          <td>
+            {{
+              team.stats.offensiveRebounds /
+                (team.stats.offensiveRebounds + team.stats.oppDefensiveRebounds) | percent: "1.1-1"
+            }}
+          </td>
           <td>
             {{ team.stats.freeThrowsMade / team.stats.fieldGoalAttempts | percent: "1.1-1" }}
           </td>
