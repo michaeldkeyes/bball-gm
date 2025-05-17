@@ -272,6 +272,8 @@ export class Game {
         this.#defense.stats.oppPoints += 3;
         this.#defense.stats.oppThreePointMade += 1;
 
+        this.#doPlusMinus(3);
+
         console.log(
           `${playerToShoot.lastName} makes the 3-point shot! He is ${playerToShoot.stats!.threePointMade} for ${playerToShoot.stats!.threePointAttempts} from 3 and has ${playerToShoot.stats!.points} points`
         );
@@ -327,6 +329,8 @@ export class Game {
         this.#defense.stats.oppFieldGoalsMade += 1;
         this.#defense.stats.oppPoints += 2;
 
+        this.#doPlusMinus(2);
+
         console.log(
           `${playerToShoot.lastName} makes the 2-point shot! He is ${playerToShoot.stats!.fieldGoalsMade} for ${playerToShoot.stats!.fieldGoalAttempts} and has ${playerToShoot.stats!.points} points`
         );
@@ -366,6 +370,16 @@ export class Game {
     }
   }
 
+  #doPlusMinus(points: number): void {
+    for (const player of this.#offense.playersOnCourt) {
+      player.stats!.plusMinus += points;
+    }
+
+    for (const player of this.#defense.playersOnCourt) {
+      player.stats!.plusMinus -= points;
+    }
+  }
+
   #isFouled(freeThrowRate: number): boolean {
     // Check if the player was fouled on the shot
     const foulChance = getRandomNumber(1000);
@@ -396,6 +410,8 @@ export class Game {
         this.#offense.stats!.pointsPerQuarter[this.#quarter - 1] += 1;
         this.#defense.stats.oppFreeThrowsMade += 1;
         this.#defense.stats.oppPoints += 1;
+
+        this.#doPlusMinus(1);
       } else {
         console.log(`${player.lastName} misses the free throw`);
       }
