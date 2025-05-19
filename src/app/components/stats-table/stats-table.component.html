@@ -66,6 +66,26 @@
           </td>
 
           <td class="px-2 py-1">{{ player.stats!.points }}</td>
+
+          <td class="px-2 py-1">
+            {{ player.stats!.plusMinus }}
+          </td>
+
+          <td class="px-2 py-1">
+            {{
+              player.stats!.points +
+                0.4 * player.stats!.fieldGoalsMade +
+                0.7 * player.stats!.offensiveRebounds +
+                0.3 * player.stats!.defensiveRebounds +
+                player.stats!.steals +
+                0.7 * player.stats!.assists +
+                0.7 * player.stats!.blocks -
+                0.7 * player.stats!.fieldGoalAttempts -
+                0.4 * (player.stats!.freeThrowAttempts - player.stats!.freeThrowsMade) -
+                0.4 * 2.25 -
+                player.stats!.turnovers | number: "1.0-0"
+            }}
+          </td>
         </tr>
       }
     </tbody>
