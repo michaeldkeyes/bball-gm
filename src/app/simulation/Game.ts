@@ -22,6 +22,8 @@ export class Game {
 
     this.#homeTeam.setPlayingTimes();
     this.#awayTeam.setPlayingTimes();
+
+    this.#setHomeCourtAdvantage();
   }
 
   simulateGame(): Game {
@@ -59,6 +61,8 @@ export class Game {
       this.#quarter++;
       gameClock = this.#quarter <= 4 ? 720 : 300; // 12 minutes for first 4 quarters, 5 minutes for overtime
     }
+
+    this.#setHomeCourtAdvantage(true); // Reset home court advantage
 
     return this;
   }
@@ -427,6 +431,37 @@ export class Game {
         }
       }
     }
+  }
+
+  #setHomeCourtAdvantage(resetHomeCourtAdvantage: boolean = false): void {
+    // Give home team a slight advantage. Home team gets a 0.5% boost to their attributes
+    // and away team gets a 0.5% decrease to their attributes.
+    const homeCourtAdvantage = 5;
+
+    this.#homeTeam.players.forEach((player) => {
+      if (!resetHomeCourtAdvantage) {
+        for (const attr in player.attributes) {
+          player.attributes[attr as keyof Attributes] += homeCourtAdvantage;
+        }
+      } else {
+        for (const attr in player.attributes) {
+          player.attributes[attr as keyof Attributes] -= homeCourtAdvantage;
+        }
+      }
+    });
+
+    this.#awayTeam.players.forEach((player) => {
+      if (!resetHomeCourtAdvantage) {
+        for (const attr in player.attributes) {
+          player.attributes[attr as keyof Attributes] -= homeCourtAdvantage;
+        }
+      } else {
+        // Reset the away team attributes to their original values
+        for (const attr in player.attributes) {
+          player.attributes[attr as keyof Attributes] += homeCourtAdvantage;
+        }
+      }
+    });
   }
 
   get homeTeam(): TeamGame {
