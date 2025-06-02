@@ -50,11 +50,6 @@ export class Game {
         console.log(`Time left in the quarter: ${gameClock} seconds`);
 
         this.#simPossession();
-
-        //this.#offense = this.#offense === this.#homeTeam ? this.#awayTeam : this.#homeTeam;
-
-        this.#homeTeam.substitutePlayers();
-        this.#awayTeam.substitutePlayers();
       }
 
       // End of quarter
@@ -217,6 +212,8 @@ export class Game {
       playerToShoot.stats!.turnovers += 1;
       this.#offense.stats.turnovers += 1;
       this.#changePossession(); // Change possession to the defense
+      this.#homeTeam.substitutePlayers();
+      this.#awayTeam.substitutePlayers();
       return; // End the possession
     }
 
@@ -229,12 +226,12 @@ export class Game {
     const totalBlockAbility = this.#getTeamTotalAttributeValue("blocking", this.#defense);
     if (blockChance <= totalBlockAbility) {
       const playerWhoBlocked = this.#choosePlayer(this.#defense, totalBlockAbility, "blocking");
-      console.log(
-        `${playerWhoBlocked.lastName} blocks the shot! He now has ${playerWhoBlocked.stats!.blocks} blocks`
-      );
       playerWhoBlocked.stats!.blocks += 1;
       this.#defense.stats.blocks += 1;
       this.#offense.stats.oppBlocks += 1;
+      console.log(
+        `${playerWhoBlocked.lastName} blocks the shot! He now has ${playerWhoBlocked.stats!.blocks} blocks`
+      );
 
       this.#simRebound();
       return;
@@ -419,6 +416,9 @@ export class Game {
       } else {
         console.log(`${player.lastName} misses the free throw`);
       }
+
+      this.#homeTeam.substitutePlayers();
+      this.#awayTeam.substitutePlayers();
 
       if (i + 1 === numberOfFreeThrows) {
         // If the last free throw was made, change possession

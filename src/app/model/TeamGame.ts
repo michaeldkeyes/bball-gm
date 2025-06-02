@@ -1,6 +1,6 @@
+import { getRandomNumberBetween } from "../simulation/utils/random";
 import { PlayerGame } from "./player.interface";
 import { PlayerStats } from "./PlayerStats";
-import { Stats } from "./Stats";
 import { Team } from "./Team";
 import { TeamStats } from "./TeamStats";
 
@@ -52,17 +52,21 @@ export class TeamGame extends Team {
    */
   setPlayingTimes(): void {
     const quarterPossessions = 50; // Estimated possessions in a quarter
-    // TODO: add randomness to this number
-    let possessionsToPlay = 37; // Starting possessions for the first player
-    const decreaseBy = 3;
+    let maxPossessions = 42;
+    let minPossessions = 37;
 
     this.#players.forEach((player, index) => {
       if (index > 9) return; // Only set playing time for the first 10 players
+      let possessionsToPlay = getRandomNumberBetween(minPossessions, maxPossessions);
 
       player.playingTime = possessionsToPlay;
       player.restTime = quarterPossessions - possessionsToPlay;
 
-      if (index !== 4) possessionsToPlay -= decreaseBy; // Don't decrease for the 6th man
+      if (index !== 4) {
+        const decreaseBy = getRandomNumberBetween(2, 5); // Random decrease for the next player
+        maxPossessions = possessionsToPlay - decreaseBy + 1;
+        minPossessions = minPossessions - decreaseBy;
+      }
     });
   }
 
