@@ -1,4 +1,5 @@
 import { PlayerStats } from "./PlayerStats";
+import { Position } from "./positions.enum";
 
 /**
  * Player interface represents a basketball player with their attributes and stats.
@@ -8,7 +9,7 @@ import { PlayerStats } from "./PlayerStats";
 export interface Player {
   firstName: string;
   lastName: string;
-  position: string;
+  position: Position;
   attributes: Attributes;
   stats?: PlayerStats;
   teamId: number;
