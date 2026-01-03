@@ -1,6 +1,8 @@
 import { Component, input } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { Router } from "@angular/router";
 import { TeamGame } from "../../model/TeamGame";
+import { Player } from "../../model/player.interface";
 
 @Component({
   selector: "app-stats-table",
@@ -10,6 +12,14 @@ import { TeamGame } from "../../model/TeamGame";
 })
 export class StatsTableComponent {
   readonly team = input.required<TeamGame>();
+
+  constructor(private router: Router) {}
+
+  navigateToPlayer(player: Player): void {
+    this.router.navigate(["/player", player.teamId], {
+      state: { player },
+    });
+  }
 
   headers = [
     "Player",

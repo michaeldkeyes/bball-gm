@@ -13,7 +13,13 @@
     <tbody class="border-y-2 border-solid border-black">
       @for (player of team().players; track $index; let i = $index) {
         <tr [ngClass]="i % 2 === 0 ? 'bg-slate-900' : 'bg-gray-800'">
-          <td class="px-2 py-1">{{ player.firstName }} {{ player.lastName }}</td>
+          <td class="px-2 py-1">
+            <button
+              (click)="navigateToPlayer(player)"
+              class="cursor-pointer text-blue-400 hover:text-blue-300 hover:underline">
+              {{ player.firstName }} {{ player.lastName }}
+            </button>
+          </td>
 
           <td class="px-2 py-1">{{ player.position }}</td>
 

@@ -1,0 +1,86 @@
+<div class="min-h-screen bg-slate-800 p-6 text-white">
+  @if (player) {
+    <button
+      (click)="goBack()"
+      class="mb-4 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+      ← Back to Game
+    </button>
+
+    <div class="mx-auto max-w-4xl">
+      <h1 class="mb-6 text-4xl font-bold">{{ player.firstName }} {{ player.lastName }}</h1>
+
+      <div class="mb-4 text-xl">
+        <span class="text-gray-400">Position:</span>
+        <span class="ml-2 font-semibold">{{ player.position }}</span>
+      </div>
+
+      <h2 class="mb-4 text-2xl font-bold">Attributes</h2>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div class="rounded-lg bg-gray-900 p-4">
+          <div class="text-gray-400">Ball Handling</div>
+          <div class="text-2xl font-bold">{{ player.attributes.ballHandling }}</div>
+        </div>
+
+        <div class="rounded-lg bg-gray-900 p-4">
+          <div class="text-gray-400">Blocking</div>
+          <div class="text-2xl font-bold">{{ player.attributes.blocking }}</div>
+        </div>
+
+        <div class="rounded-lg bg-gray-900 p-4">
+          <div class="text-gray-400">Defensive Rebounding</div>
+          <div class="text-2xl font-bold">{{ player.attributes.defensiveRebounding }}</div>
+        </div>
+
+        <div class="rounded-lg bg-gray-900 p-4">
+          <div class="text-gray-400">Free Throw Shooting</div>
+          <div class="text-2xl font-bold">{{ player.attributes.freeThrowShooting }}</div>
+        </div>
+
+        <div class="rounded-lg bg-gray-900 p-4">
+          <div class="text-gray-400">Offensive Rebounding</div>
+          <div class="text-2xl font-bold">{{ player.attributes.offensiveRebounding }}</div>
+        </div>
+
+        <div class="rounded-lg bg-gray-900 p-4">
+          <div class="text-gray-400">Passing</div>
+          <div class="text-2xl font-bold">{{ player.attributes.passing }}</div>
+        </div>
+
+        <div class="rounded-lg bg-gray-900 p-4">
+          <div class="text-gray-400">Stealing</div>
+          <div class="text-2xl font-bold">{{ player.attributes.stealing }}</div>
+        </div>
+
+        <div class="rounded-lg bg-gray-900 p-4">
+          <div class="text-gray-400">Two Point Shooting</div>
+          <div class="text-2xl font-bold">{{ player.attributes.twoPointShooting }}</div>
+        </div>
+
+        <div class="rounded-lg bg-gray-900 p-4">
+          <div class="text-gray-400">Three Point Shooting</div>
+          <div class="text-2xl font-bold">{{ player.attributes.threePointShooting }}</div>
+        </div>
+
+        <div class="rounded-lg bg-gray-900 p-4">
+          <div class="text-gray-400">Three Point Tendency</div>
+          <div class="text-2xl font-bold">{{ player.attributes.threeTendency }}</div>
+        </div>
+
+        <div class="rounded-lg bg-gray-900 p-4">
+          <div class="text-gray-400">Usage Rate</div>
+          <div class="text-2xl font-bold">{{ player.attributes.usageRate }}</div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="text-center">
+      <p class="mb-4 text-xl">Player not found</p>
+      <button
+        (click)="goBack()"
+        class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+        ← Back to Game
+      </button>
+    </div>
+  }
+</div>
