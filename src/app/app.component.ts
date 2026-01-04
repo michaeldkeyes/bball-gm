@@ -1,25 +1,26 @@
-import { Component, OnInit, signal } from "@angular/core";
-import { RouterOutlet } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { Router, RouterOutlet } from "@angular/router";
 import { TeamService } from "./service/team.service";
-import { StatsTableComponent } from "./components/stats-table/stats-table.component";
+import { GameStateService } from "./service/game-state.service";
 import { Game } from "./simulation/Game";
 import { Team } from "./model/Team";
-import { TeamPpqtableComponent } from "./components/team-ppqtable/team-ppqtable.component";
-import { FourFactorsComponent } from "./components/four-factors/four-factors.component";
 import { generateRandomPlayers } from "./utils/playerGenerator";
 
 @Component({
   selector: "app-root",
-  imports: [RouterOutlet, FourFactorsComponent, StatsTableComponent, TeamPpqtableComponent],
+  imports: [RouterOutlet],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",
 })
 export class AppComponent implements OnInit {
   homeTeam: Team | undefined;
   awayTeam: Team | undefined;
-  readonly gameResult = signal<Game | null>(null);
 
-  constructor(private teamService: TeamService) {}
+  constructor(
+    private teamService: TeamService,
+    private router: Router,
+    private gameStateService: GameStateService
+  ) {}
 
   ngOnInit(): void {
     this.homeTeam = new Team(1, "LAL", "Lakers", "Los Angeles", generateRandomPlayers());
@@ -41,8 +42,11 @@ export class AppComponent implements OnInit {
   simulateGame(): void {
     if (this.homeTeam && this.awayTeam) {
       const game = new Game(this.homeTeam, this.awayTeam);
+      const gameResult = game.simulateGame();
 
-      this.gameResult.set(game.simulateGame());
+      this.gameStateService.setGame(gameResult);
+
+      this.router.navigate(["/game"]);
     }
   }
 }

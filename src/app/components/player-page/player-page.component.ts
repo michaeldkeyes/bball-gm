@@ -12,23 +12,18 @@ import { Player } from "../../model/player.interface";
 export class PlayerPageComponent implements OnInit {
   player: Player | null = null;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    // Get player data from navigation state
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
       this.player = navigation.extras.state["player"];
     } else {
-      // Try to get from history state (for direct URL access or refresh)
       this.player = history.state["player"];
     }
   }
 
   goBack(): void {
-    this.router.navigate(["/"]);
+    this.router.navigate(["/game"]);
   }
 }

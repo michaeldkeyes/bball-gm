@@ -1,0 +1,40 @@
+<div class="min-h-screen bg-slate-800 text-white">
+  @if (gameResult) {
+    <div class="p-6">
+      <button
+        (click)="goBack()"
+        class="mb-4 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+        ← Back to Home
+      </button>
+
+      <h1 class="mb-6 text-center text-3xl font-bold">Game Results</h1>
+
+      <div class="mb-6 flex justify-center text-2xl">
+        <h2>{{ gameResult.homeTeam.fullName() }} &nbsp;</h2>
+        <h2 class="font-bold">{{ gameResult.homeTeam.stats!.points }} &nbsp;</h2>
+        <span class="text-lg"> - &nbsp; </span>
+        <h2 class="font-bold">{{ gameResult.awayTeam.stats!.points }} &nbsp;</h2>
+        <h2>{{ gameResult.awayTeam.fullName() }}</h2>
+      </div>
+
+      <div class="mb-6 flex justify-center">
+        <app-team-ppqtable [game]="gameResult" />
+        <app-four-factors [teams]="gameResult.getTeams()" />
+      </div>
+
+      <app-stats-table [team]="gameResult.homeTeam" />
+      <app-stats-table [team]="gameResult.awayTeam" />
+    </div>
+  } @else {
+    <div class="flex min-h-screen items-center justify-center">
+      <div class="text-center">
+        <p class="mb-4 text-xl">No game results found</p>
+        <button
+          (click)="goBack()"
+          class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+          ← Back to Home
+        </button>
+      </div>
+    </div>
+  }
+</div>
