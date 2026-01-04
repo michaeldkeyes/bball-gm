@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, effect } from "@angular/core";
 import { Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { Game } from "../../simulation/Game";
@@ -14,17 +14,24 @@ import { FourFactorsComponent } from "../four-factors/four-factors.component";
   styleUrl: "./game-results.component.scss",
 })
 export class GameResultsComponent implements OnInit {
-  gameResult: Game | null = null;
+  readonly gameResult = this.gameStateService.getGame();
 
   constructor(
     private router: Router,
     private gameStateService: GameStateService
-  ) {}
+  ) {
+    // Use effect to react to game changes
+    effect(() => {
+      const game = this.gameResult();
+      if (!game) {
+        this.router.navigate(["/"]);
+      }
+    });
+  }
 
   ngOnInit(): void {
-    this.gameResult = this.gameStateService.getGame();
-
-    if (!this.gameResult) {
+    // Check if there's a game on init
+    if (!this.gameResult()) {
       this.router.navigate(["/"]);
     }
   }

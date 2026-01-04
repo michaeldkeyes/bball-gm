@@ -1,21 +1,21 @@
-import { Injectable } from "@angular/core";
+import { Injectable, signal, Signal } from "@angular/core";
 import { Game } from "../simulation/Game";
 
 @Injectable({
   providedIn: "root",
 })
 export class GameStateService {
-  private currentGame: Game | null = null;
+  private currentGame = signal<Game | null>(null);
 
   setGame(game: Game): void {
-    this.currentGame = game;
+    this.currentGame.set(game);
   }
 
-  getGame(): Game | null {
-    return this.currentGame;
+  getGame(): Signal<Game | null> {
+    return this.currentGame.asReadonly();
   }
 
   clearGame(): void {
-    this.currentGame = null;
+    this.currentGame.set(null);
   }
 }
