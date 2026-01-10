@@ -1,7 +1,6 @@
 import { Component, OnInit, effect } from "@angular/core";
 import { Router } from "@angular/router";
-import { CommonModule } from "@angular/common";
-import { Game } from "../../simulation/Game";
+
 import { GameStateService } from "../../service/game-state.service";
 import { StatsTableComponent } from "../stats-table/stats-table.component";
 import { TeamPpqtableComponent } from "../team-ppqtable/team-ppqtable.component";
@@ -9,7 +8,7 @@ import { FourFactorsComponent } from "../four-factors/four-factors.component";
 
 @Component({
   selector: "app-game-results",
-  imports: [CommonModule, StatsTableComponent, TeamPpqtableComponent, FourFactorsComponent],
+  imports: [StatsTableComponent, TeamPpqtableComponent, FourFactorsComponent],
   templateUrl: "./game-results.component.html",
   styleUrl: "./game-results.component.scss",
 })

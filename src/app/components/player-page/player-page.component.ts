@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { CommonModule } from "@angular/common";
+
 import { Player } from "../../model/player.interface";
 
 @Component({
   selector: "app-player-page",
-  imports: [CommonModule],
+  imports: [],
   templateUrl: "./player-page.component.html",
   styleUrl: "./player-page.component.scss",
 })
