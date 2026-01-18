@@ -9,8 +9,6 @@ import { CommonModule } from "@angular/common";
   styleUrl: "./four-factors.component.scss",
 })
 export class FourFactorsComponent {
-  // readonly homeTeam = input.required<TeamGame>();
-  // readonly awayTeam = input.required<TeamGame>();
   readonly teams = input.required<TeamGame[]>();
 
   headers = ["eFG%", "TOV%", "ORB%", "FTR%"];
