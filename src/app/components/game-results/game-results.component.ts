@@ -19,7 +19,6 @@ export class GameResultsComponent implements OnInit {
     private router: Router,
     private gameStateService: GameStateService
   ) {
-    // Use effect to react to game changes
     effect(() => {
       const game = this.gameResult();
       if (!game) {
@@ -29,7 +28,6 @@ export class GameResultsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Check if there's a game on init
     if (!this.gameResult()) {
       this.router.navigate(["/"]);
     }
