@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { StatsTableComponent } from './stats-table.component';
+import { StatsTableComponent } from "./stats-table.component";
+import { beforeEach, describe, expect, it } from "vitest";
 
-describe('StatsTableComponent', () => {
+describe("StatsTableComponent", () => {
   let component: StatsTableComponent;
   let fixture: ComponentFixture<StatsTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StatsTableComponent]
-    })
-    .compileComponents();
+      imports: [StatsTableComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(StatsTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

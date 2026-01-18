@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { PlayerPageComponent } from "./player-page.component";
+import { beforeEach, describe, expect, it } from "vitest";
 
 describe("PlayerPageComponent", () => {
   let component: PlayerPageComponent;

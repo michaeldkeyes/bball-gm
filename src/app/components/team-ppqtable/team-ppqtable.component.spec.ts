@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { TeamPpqtableComponent } from './team-ppqtable.component';
+import { TeamPpqtableComponent } from "./team-ppqtable.component";
+import { beforeEach, describe, expect, it } from "vitest";
 
-describe('TeamPpqtableComponent', () => {
+describe("TeamPpqtableComponent", () => {
   let component: TeamPpqtableComponent;
   let fixture: ComponentFixture<TeamPpqtableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TeamPpqtableComponent]
-    })
-    .compileComponents();
+      imports: [TeamPpqtableComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TeamPpqtableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
